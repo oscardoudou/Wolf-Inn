@@ -1,11 +1,12 @@
-drop table if exists Hotel;
-drop table if exists Service_Request;
-drop table if exists Check_in;
-drop table if exists Staff;
 drop table if exists Billing_info;
-drop table if exists Customer;
+drop table if exists Check_in;
+drop table if exists Service_Request;
 drop table if exists Room;
 
+
+drop table if exists Customer;
+drop table if exists Hotel;
+drop table if exists Staff;
 CREATE TABLE Staff (
 	id   INTEGER NOT NULL PRIMARY KEY,
 	name    VARCHAR(20) NOT NULL,
@@ -35,13 +36,11 @@ CREATE TABLE Room (
 	room_id integer PRIMARY KEY,
 	max_occu integer(40) NOT NULL, 
 	rate float NOT NULL, 
-	avai boolean NOT NULL);
+	avai boolean NOT NULL,
+    hotel_id integer NOT NULL,
+    foreign key(hotel_id) references Hotel(id)
+    );
 
-INSERT INTO Room VALUES ('101', 4, 100.00, TRUE);
-INSERT INTO Room VALUES ('102', 2, 50.00, TRUE);
-INSERT INTO Room VALUES ('201', 4, 100.00, FALSE);
-INSERT INTO Room VALUES ('202', 2, 50.00, FALSE);
-INSERT INTO Room VALUES ('301', 1, 35.00, FALSE);
 
 create table Billing_info
 (
@@ -68,14 +67,17 @@ insert into Staff values('23251', 'Jack Chris', 'manager');
 insert into Staff values('18007', 'Jim Blarr', 'front desk');
 insert into Staff values('23212', 'Mary Lynch', 'support');
 insert into Staff values('43231', 'Jane DeVoe', 'billing');
+
 insert into Hotel values('2342112', 'hotel1', '1010 billing st', 'Cary', '324231311', '10021');
 insert into Hotel values('2127686', 'hotel2', '221 Caroll Dr', 'Memphis', '345423652', '23251');
 insert into Hotel values('6574222', 'hotel3', '5542 Dell St.', 'Austin', '234531763', '23251');
 insert into Hotel values('7677832', 'hotel4', '1121 Portland Ave', 'Seattle', '645654112', '10021');
-insert into Billing_info values('2334235','283434', 'visa', '4533454', 0, 1, '101', '24235667');
-insert into Billing_info values('3224345', '213434', 'master', '5644543', 1, 1, '102', '45345511' );
-insert into Billing_info values('2343454', '372132', 'visa', '5675545', 0, 1, '201','87543123');
-insert into Billing_info values('2454233', '452134', 'master', '5434231', 1, 0, '301', '23467572');
+INSERT INTO Room VALUES ('101', 4, 100.00, TRUE,'7677832');
+INSERT INTO Room VALUES ('102', 2, 50.00, TRUE,'7677832');
+INSERT INTO Room VALUES ('201', 4, 100.00, FALSE,'2127686');
+INSERT INTO Room VALUES ('202', 2, 50.00, FALSE, '6574222');
+INSERT INTO Room VALUES ('301', 1, 35.00, FALSE, '6574222');
+
 #select * from Staff;
 #select * from Hotel;
 #select * from Customer;
@@ -122,4 +124,15 @@ insert into Check_in values('53645243', '2019-02-09', '2019-02-12', 3, '23467572
 insert into Check_in values('24315564', '2017-09-12', '2017-09-13', 1, '87543123', '102');
 insert into Check_in values('78653235', '2017-11-02', '2017-11-07', 1, '45345511', '101');
 #select * from Check_in;
+#insert into Check_in 
 insert into Check_in values('24542523', '2019-03-18', '2019-03-20',2, '45345511', '102');
+insert into Billing_info values('2334235','283434', 'visa', '4533454', 0, 1, '101', '24235667');
+#insert into Billing_info values('3224345', '213434', 'master', '5644543', 1, 1, '102', '45345511' );
+#insert into Billing_info values('2343454', '372132', 'visa', '5675545', 0, 1, '201','87543123');
+#insert into Billing_info values('2454233', '452134', 'master', '5434231', 1, 0, '301', '23467572');
+update Billing_info set payment_type='hotel' where id='2342112';
+#select * from Room where avai=1;
+insert into Check_in values('22514438', '2019-03-18', '2019-03-20', 3, '45345511', '101');
+update Room set avai = 1 where room_id = '101'; 
+#select count(*) from room where id='2342112' and avai
+select * from Staff group by rank;
