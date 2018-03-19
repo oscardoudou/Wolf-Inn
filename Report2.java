@@ -39,26 +39,22 @@ public class Report2 {
         stmt.executeUpdate("Drop TABLE IF EXISTS Service_Request");
         stmt.executeUpdate("Drop TABLE IF EXISTS Billing_info");
         stmt.executeUpdate("Drop TABLE IF EXISTS Check_in");
+        stmt.executeUpdate("Drop TABLE IF EXISTS Room");
         stmt.executeUpdate("Drop TABLE IF EXISTS Hotel");
         stmt.executeUpdate("Drop TABLE IF EXISTS Customer");
-        stmt.executeUpdate("Drop TABLE IF EXISTS Room");
         stmt.executeUpdate("Drop TABLE IF EXISTS Staff");
 		// Create the tables
 		
         stmt.executeUpdate("CREATE TABLE Staff (id   INTEGER NOT NULL PRIMARY KEY,name    VARCHAR(20) NOT NULL,rank     VARCHAR(20) NOT NULL)");
 		stmt.executeUpdate("CREATE TABLE Hotel (id INTEGER NOT NULL PRIMARY KEY,name VARCHAR(20) NOT NULL,address VARCHAR(50) NOT NULL,city VARCHAR(10) NOT NULL,phone INTEGER UNIQUE,manager_id INTEGER NOT NULL,FOREIGN KEY (manager_id)REFERENCES Staff (id))");
         stmt.executeUpdate("CREATE TABLE Customer (id  INTEGER NOT NULL PRIMARY KEY,name VARCHAR(20) NOT NULL,dob  DATE NOT NULL,phone INTEGER,email VARCHAR(20) )");
-        stmt.executeUpdate("CREATE TABLE Room (room_id integer PRIMARY KEY,max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL)");
+        stmt.executeUpdate("CREATE TABLE Room (room_id integer PRIMARY KEY, hotel_id integer NOT NULL, max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL, foreign key(hotel_id) REFERENCES Hotel(id))");
         stmt.executeUpdate("CREATE TABLE Billing_info(id INTEGER NOT NULL PRIMARY KEY,ssn INTEGER NOT NULL,payment_type VARCHAR(20) NOT NULL,card_number  INTEGER NOT NULL,hotel_card BOOLEAN NOT NULL,check_in BOOLEAN NOT NULL,room_id INTEGER NOT NULL,customer_id INTEGER NOT NULL,FOREIGN KEY(room_id)REFERENCES Room(room_id),FOREIGN KEY(customer_id)REFERENCES Customer(id)    )");
         stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL,start_date DATE NOT NULL,end_date DATE NOT NULL,guestCnt INTEGER NOT NULL,customer_id INTEGER NOT NULL,room_id INTEGER NOT NULL,foreign key(room_id) REFERENCES Room(room_id),foreign key(customer_id) REFERENCES Customer(id))");
         stmt.executeUpdate("CREATE TABLE Service_Request (service_request_id integer NOT NULL PRIMARY KEY, room_id integer NOT NULL, submitter_id integer NOT NULL, customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, date varchar(40) NOT NULL, cost float NOT NULL, FOREIGN KEY(room_id)REFERENCES Room(room_id),FOREIGN KEY (submitter_id )REFERENCES Staff(id),FOREIGN KEY (customer_id)REFERENCES Customer (id))");
         // Populate the tables
 
-		stmt.executeUpdate("INSERT INTO Room VALUES ('101', 4, 100.00, TRUE)");
-        stmt.executeUpdate("INSERT INTO Room VALUES ('102', 2, 50.00, TRUE)");
-		stmt.executeUpdate("INSERT INTO Room VALUES ('201', 4, 100.00, FALSE)");
-		stmt.executeUpdate("INSERT INTO Room VALUES ('202', 2, 50.00, FALSE)");
-		stmt.executeUpdate("INSERT INTO Room VALUES ('301', 1, 35.00, FALSE)");
+		
         //stmt.executeUpdate("INSERT INTO Room VALUES ('161', 6, 120.00, False)");
 
         stmt.executeUpdate("INSERT INTO Customer values('24235667', 'James Harrison', '1992-01-21', '435234114', 'james24@ro.com')");
@@ -76,6 +72,12 @@ public class Report2 {
         stmt.executeUpdate("INSERT INTO Hotel values('2127686', 'hotel2', '221 Caroll Dr', 'Memphis', '345423652', '23251')");
         stmt.executeUpdate("INSERT INTO Hotel values('6574222', 'hotel3', '5542 Dell St.', 'Austin', '234531763', '23251')");
         stmt.executeUpdate("INSERT INTO Hotel values('7677832', 'hotel4', '1121 Portland Ave', 'Seattle', '645654112', '10021')");
+
+        stmt.executeUpdate("INSERT INTO Room VALUES ('101', '7677832', 4, 100.00, TRUE)");
+        stmt.executeUpdate("INSERT INTO Room VALUES ('102', '7677832', 2, 50.00, TRUE )");
+        stmt.executeUpdate("INSERT INTO Room VALUES ('201', '2127686', 4, 100.00, FALSE)");
+        stmt.executeUpdate("INSERT INTO Room VALUES ('202', '6574222', 2, 50.00, FALSE)");
+        stmt.executeUpdate("INSERT INTO Room VALUES ('301', '6574222', 1, 35.00, FALSE)");
 
         stmt.executeUpdate("INSERT INTO Billing_info values('2334235','283434', 'visa', '4533454', 0, 1, '101', '24235667')");
         stmt.executeUpdate("INSERT INTO Billing_info values('3224345', '213434', 'master', '5644543', 1, 1, '102', '45345511')");
