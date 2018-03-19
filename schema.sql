@@ -1,4 +1,5 @@
 drop table if exists Hotel;
+drop table if exists Service_Request;
 drop table if exists Check_in;
 drop table if exists Staff;
 drop table if exists Billing_info;
@@ -95,8 +96,30 @@ create table Check_in(
     foreign key(room_id) REFERENCES Room(room_id),
     foreign key(customer_id) REFERENCES Customer(id)
 );
+
+CREATE TABLE Service_Request (
+   service_request_id integer NOT NULL PRIMARY KEY, 
+   room_id integer NOT NULL, 
+  submitter_id integer NOT NULL, 
+  customer_id integer NOT NULL, 
+  type varchar(10) NOT NULL, 
+  complete boolean NOT NULL, 
+  date varchar(40) NOT NULL, 
+  cost float NOT NULL, 
+  FOREIGN KEY(room_id)
+    REFERENCES Room(room_id),
+  FOREIGN KEY (submitter_id )
+    REFERENCES Staff(id),
+  FOREIGN KEY (customer_id)
+    REFERENCES Customer (id)
+ 
+  );
+ 
+ insert into Service_Request values('001','101','10021','24235667','room_ser', '1', '23', '54.5');
+ update Service_Request set cost='23.3' where service_request_id='001';
 insert into Check_in values('13142345', '2019-01-03', '2019-01-05', 2, '23467572', '201');
 insert into Check_in values('53645243', '2019-02-09', '2019-02-12', 3, '23467572', '202');
 insert into Check_in values('24315564', '2017-09-12', '2017-09-13', 1, '87543123', '102');
 insert into Check_in values('78653235', '2017-11-02', '2017-11-07', 1, '45345511', '101');
-select * from Check_in;
+#select * from Check_in;
+insert into Check_in values('24542523', '2019-03-18', '2019-03-20',2, '45345511', '102');
