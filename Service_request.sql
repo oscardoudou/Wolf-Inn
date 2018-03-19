@@ -64,5 +64,8 @@ CREATE TABLE Service_Request (
   );
  
  insert into Service_Request values('001','101','10021','24235667','room_service', '1', '23', '54.5');
+  insert into Service_Request values('002','102','23251','45345511','dining', '1', '24', '24.5');
+  insert into Service_Request values('003','201','18007','87543123','cleaning', '0', '25', '34.5');
+  insert into Service_Request values('004','301','23212','23467572','cleaning', '0', '26', '44.5'); 
  update Service_Request set cost='23.3' where service_request_id='001';
   
