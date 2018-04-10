@@ -16,7 +16,7 @@ public class DBConnection {
             }
         }catch (ClassNotFoundException e){
             e.printStackTrace();
-            }
+        }
     }
     public static void close(){
         if(conn != null){
@@ -25,5 +25,9 @@ public class DBConnection {
             }
             catch(Throwable whatever){}
         }
+    }
+
+    public static Connection getConnection() {
+        return conn;
     }
 }
