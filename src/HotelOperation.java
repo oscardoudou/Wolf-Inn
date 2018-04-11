@@ -10,6 +10,7 @@ public class HotelOperation {
 //    private static String passwd = "jlp^zcl*";
 //    static private final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/yzhan222";
 
+
     public static void createHotel(String name, String address, String city, long phone, int manager_id) {
         String sql = "insert into Hotel(name, address, city, phone, manager_id) values(?,?,?,?,?)";
         try {
@@ -23,32 +24,32 @@ public class HotelOperation {
             ptmt.setInt(5, manager_id);
             ptmt.execute();
             System.out.println("A new hotel has been created!");
-        } catch(Throwable oops) {
+        } catch (Throwable oops) {
             oops.printStackTrace();
         }
     }
-    public static void deleteHotel(){
+
+    public static void deleteHotel() {
         //leave input as ?
         String sql = "delete from Hotel where name = ? ";
         System.out.println("Tell me which hotel you hate:(eg.hotel0)");
-        Scanner sc= new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
-        try{
+        try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             //use ?'s index to assign value
-            ptmt.setString(1,input);
+            ptmt.setString(1, input);
             //uncomment follow statement would throw exception
             //ptmt.setString(2,name);
             ptmt.execute();
             System.out.println("A hotel has been deleted!");
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
-    public static void updateHotel(){
+    public static void updateHotel() {
         String sql = "update Hotel ";
 //                "name = ? where name = ?";
         System.out.println("Please input which hotel you want to update:(eg.hotel0)");
@@ -63,48 +64,53 @@ public class HotelOperation {
         String choice = sc.nextLine();
         System.out.println("Please input the new attribtue you want to give:");
         String attr = sc.nextLine();
-        try{
+        try {
             Connection conn = DBConnection.getConnection();
-            switch(choice){
-                    case "1":
-                        sql += "set name";
-                        break;
-                    case "2":
-                        sql += "set address";
-                        break;
-                    case "3":
-                        sql += "set city";
-                        break;
-                    case "4":
-                        sql += "set phone";
-                        break;
-                    case "5":
-                        sql += "set manager_id";
-                        break;
-                    default:
-                        System.out.println("illegel input");
-                        break;
-                }
-                sql += " = ? where name = ? ";
-                //attention: belew statement shouldn't put before switch,
-                // preparedstatement should create only after sql finished, or compile run ptmt have no index which lead to run time error 
-                PreparedStatement ptmt = conn.prepareStatement(sql);
-                ptmt.setString(1,attr);
-                ptmt.setString(2,hotelname);
-                ptmt.execute();
-                System.out.println(hotelname + " has been update!");
-        }catch(SQLException e){
+            switch (choice) {
+                case "1":
+                    sql += "set name";
+                    break;
+                case "2":
+                    sql += "set address";
+                    break;
+                case "3":
+                    sql += "set city";
+                    break;
+                case "4":
+                    sql += "set phone";
+                    break;
+                case "5":
+                    sql += "set manager_id";
+                    break;
+                default:
+                    System.out.println("illegel input");
+                    break;
+            }
+            sql += " = ? where name = ? ";
+            //attention: belew statement shouldn't put before switch,
+            // preparedstatement should create only after sql finished, or compile run ptmt have no index which lead to run time error
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, attr);
+            ptmt.setString(2, hotelname);
+            ptmt.execute();
+            System.out.println(hotelname + " has been update!");
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     public static void initialize() {
         try {
 
-           Statement stmt = null;
-           ResultSet rs = null;
+            Statement stmt = null;
+            ResultSet rs = null;
             Connection conn = DBConnection.getConnection();
             stmt = conn.createStatement();
             try {
+                // Create a statement object that will be sending your
+                // SQL statements to the DBMS
+
+                stmt = conn.createStatement();
 
                 // Drop existed tables
                 stmt.executeUpdate("Drop TABLE IF EXISTS Service_Request");
@@ -119,17 +125,30 @@ public class HotelOperation {
                 stmt.executeUpdate("CREATE TABLE Staff (id   INTEGER NOT NULL PRIMARY KEY,name    VARCHAR(20) NOT NULL,rank     VARCHAR(20) NOT NULL)");
                 stmt.executeUpdate("CREATE TABLE Hotel (id INTEGER NOT NULL PRIMARY KEY auto_increment,name VARCHAR(20) NOT NULL,address VARCHAR(50) NOT NULL,city VARCHAR(10) NOT NULL,phone INTEGER UNIQUE,manager_id INTEGER NOT NULL)");
                 stmt.executeUpdate("CREATE TABLE Customer (id  INTEGER NOT NULL PRIMARY KEY,name VARCHAR(20) NOT NULL,dob  DATE NOT NULL,phone INTEGER,email VARCHAR(20) )");
-                stmt.executeUpdate("CREATE TABLE Room (room_id integer PRIMARY KEY, hotel_id integer NOT NULL, max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL, foreign key(hotel_id) REFERENCES Hotel(id))");
+                stmt.executeUpdate("CREATE TABLE Room (room_id integer PRIMARY KEY auto_increment, hotel_id integer NOT NULL, max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL, foreign key(hotel_id) REFERENCES Hotel(id))");
                 stmt.executeUpdate("CREATE TABLE Billing_info(id INTEGER NOT NULL PRIMARY KEY,ssn INTEGER NOT NULL,payment_type VARCHAR(20) NOT NULL,card_number  INTEGER NOT NULL,hotel_card BOOLEAN NOT NULL,check_in BOOLEAN NOT NULL,room_id INTEGER NOT NULL,customer_id INTEGER NOT NULL,FOREIGN KEY(room_id)REFERENCES Room(room_id),FOREIGN KEY(customer_id)REFERENCES Customer(id)    )");
                 stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL,start_date DATE NOT NULL,end_date DATE NOT NULL,guestCnt INTEGER NOT NULL,customer_id INTEGER NOT NULL,room_id INTEGER NOT NULL,foreign key(room_id) REFERENCES Room(room_id),foreign key(customer_id) REFERENCES Customer(id))");
                 stmt.executeUpdate("CREATE TABLE Service_Request (service_request_id integer NOT NULL PRIMARY KEY, room_id integer NOT NULL, submitter_id integer NOT NULL, customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, date varchar(40) NOT NULL, cost float NOT NULL, FOREIGN KEY(room_id)REFERENCES Room(room_id),FOREIGN KEY (submitter_id )REFERENCES Staff(id),FOREIGN KEY (customer_id)REFERENCES Customer (id))");
 //                // Populate the tables
 //
-                createHotel("hotel1","1343 Huston Dr.","Cary",54556421, 1010);
-                createHotel("hotel2","5678 Brigadon Dr.","Raleigh",7371320, 1007);
+                createHotel("hotel1", "1343 Huston Dr.", "Cary", 54556421, 1010);
+                createHotel("hotel2", "5678 Brigadon Dr.", "Raleigh", 7371320, 1007);
 
 //                //stmt.executeUpdate("INSERT INTO Room VALUES ('161', 6, 120.00, False)");
-//
+//                rs = stmt.executeQuery("select * from Hotel");
+//                while(rs.next()){
+//                    //Retrieve by column name
+//                    int hotel_id = rs.getInt("id");
+//                    String name = rs.getString("name");
+//                    String address = rs.getString("address");
+//                    String City = rs.getString("city");
+//                    //Display values
+//                    System.out.print("ID: " + hotel_id);
+//                    System.out.print(", name: " + name);
+//                    System.out.print(", address: " + address);
+//                    System.out.println(", city: " + City);
+//                }
+//                rs.close();
 //                stmt.executeUpdate("INSERT INTO Customer values('24235667', 'James Harrison', '1992-01-21', '435234114', 'james24@ro.com')");
 //                stmt.executeUpdate("INSERT INTO Customer values('45345511', 'Ford Rex', '1987-04-30', '923211432', 'fox@fox.com')");
 //                stmt.executeUpdate("INSERT INTO Customer values('87543123', 'Bill Fredson', '1987-11-28', '902343451', 'soing@haha.com')");
@@ -162,15 +181,19 @@ public class HotelOperation {
 //                stmt.executeUpdate("INSERT INTO Check_in values('53645243', '2019-02-09', '2019-02-12', 3, '23467572', '202')");
 //                stmt.executeUpdate("INSERT INTO Check_in values('24315564', '2017-09-12', '2017-09-13', 1, '87543123', '102')");
 //                stmt.executeUpdate("INSERT INTO Check_in values('78653235', '2017-11-02', '2017-11-07', 1, '45345511', '101')");
-            }catch(SQLException e){
+
+            } catch (SQLException e) {
                 e.printStackTrace();
+            } finally {
+
+                //close(conn);
             }
 //            finally {
 //                close(rs);
 //                close(stmt);
 //                close(conn);
 //            }
-        } catch(Throwable oops) {
+        } catch (Throwable oops) {
             oops.printStackTrace();
         }
     }
@@ -192,4 +215,5 @@ public class HotelOperation {
 //            try { rs.close(); } catch(Throwable whatever) {}
 //        }
 //    }
+
 }
