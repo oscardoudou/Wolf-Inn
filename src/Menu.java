@@ -6,7 +6,7 @@ public class Menu {
         DBConnection.initialize();
         Scanner sc = new Scanner(System.in);
         while(true){
-            System.out.println("No: ");
+            System.out.println("Choose an option: ");
             switch(sc.nextLine()){
                 case "1":
                     System.out.println("success enter infoprocessing");
@@ -14,6 +14,7 @@ public class Menu {
                     break;
                 case "2":
                     System.out.println("not enter infoprocessing");
+                    RoomOperation.run();
                     break;
                 case "5":
                     System.out.println("Bye!");
