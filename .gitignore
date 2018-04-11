@@ -1,3 +1,4 @@
-*.iml
-.idea/*
-*.xml
+.idea/dictionaries
+.idea/**/workspace.xml
+.idea/**/task.xml
+
