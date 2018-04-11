@@ -3,16 +3,18 @@
 // Relpace all yzhan222 with your unity id and jlp^zcl* with your 9 \d or updated password (if changed)
 
 import java.sql.*;
+import java.util.Scanner;
 
 public class HotelOperation {
-    private static String user = "yzhan222";
-    private static String passwd = "jlp^zcl*";
-    static private final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/yzhan222";
+//    private static String user = "yzhan222";
+//    private static String passwd = "jlp^zcl*";
+//    static private final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/yzhan222";
 
     public static void createHotel(String name, String address, String city, long phone, int manager_id) {
         String sql = "insert into Hotel(name, address, city, phone, manager_id) values(?,?,?,?,?)";
         try {
-            Connection conn = DriverManager.getConnection(jdbcURL, user, passwd);
+            Connection conn = DBConnection.getConnection();
+//            Connection conn = DriverManager.getConnection(jdbcURL, user, passwd);
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, name);
             ptmt.setString(2, address);
@@ -25,29 +27,84 @@ public class HotelOperation {
             oops.printStackTrace();
         }
     }
-    public static void run() {
+    public static void deleteHotel(){
+        //leave input as ?
+        String sql = "delete from Hotel where name = ? ";
+        System.out.println("Tell me which hotel you hate:(eg.hotel0)");
+        Scanner sc= new Scanner(System.in);
+        String input = sc.nextLine();
+        try{
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            //use ?'s index to assign value
+            ptmt.setString(1,input);
+            //uncomment follow statement would throw exception
+            //ptmt.setString(2,name);
+            ptmt.execute();
+            System.out.println("A hotel has been deleted!");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void updateHotel(){
+        String sql = "update Hotel ";
+//                "name = ? where name = ?";
+        System.out.println("Please input which hotel you want to update:(eg.hotel0)");
+        Scanner sc = new Scanner(System.in);
+        String hotelname = sc.nextLine();
+        System.out.println("Please select the attribute you want to  update from 4 choice below:");
+        System.out.println("1.name");
+        System.out.println("2.address");
+        System.out.println("3.city");
+        System.out.println("4.phone");
+        System.out.println("5.managerid");
+        String choice = sc.nextLine();
+        System.out.println("Please input the new attribtue you want to give:");
+        String attr = sc.nextLine();
+        try{
+            Connection conn = DBConnection.getConnection();
+            switch(choice){
+                    case "1":
+                        sql += "set name";
+                        break;
+                    case "2":
+                        sql += "set address";
+                        break;
+                    case "3":
+                        sql += "set city";
+                        break;
+                    case "4":
+                        sql += "set phone";
+                        break;
+                    case "5":
+                        sql += "set manager_id";
+                        break;
+                    default:
+                        System.out.println("illegel input");
+                        break;
+                }
+                sql += " = ? where name = ? ";
+                //attention: belew statement shouldn't put before switch,
+                // preparedstatement should create only after sql finished, or compile run ptmt have no index which lead to run time error 
+                PreparedStatement ptmt = conn.prepareStatement(sql);
+                ptmt.setString(1,attr);
+                ptmt.setString(2,hotelname);
+                ptmt.execute();
+                System.out.println(hotelname + " has been update!");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+    public static void initialize() {
         try {
 
-            // Load the driver. This creates an instance of the driver
-            // and calls the registerDriver method to make MariaDB Thin
-            // driver, available to clients.
-
-           // Class.forName("org.mariadb.jdbc.Driver");
-            Connection conn = DBConnection.getConnection();
            Statement stmt = null;
            ResultSet rs = null;
-
+            Connection conn = DBConnection.getConnection();
+            stmt = conn.createStatement();
             try {
-
-                // Get a connection from the first driver in the
-                // DriverManager list that recognizes the URL jdbcURL
-
-                conn = DriverManager.getConnection(jdbcURL, user, passwd);
-
-                // Create a statement object that will be sending your
-                // SQL statements to the DBMS
-
-                stmt = conn.createStatement();
 
                 // Drop existed tables
                 stmt.executeUpdate("Drop TABLE IF EXISTS Service_Request");
@@ -69,6 +126,8 @@ public class HotelOperation {
 //                // Populate the tables
 //
                 createHotel("hotel1","1343 Huston Dr.","Cary",54556421, 1010);
+                createHotel("hotel2","5678 Brigadon Dr.","Raleigh",7371320, 1007);
+
 //                //stmt.executeUpdate("INSERT INTO Room VALUES ('161', 6, 120.00, False)");
 //
 //                stmt.executeUpdate("INSERT INTO Customer values('24235667', 'James Harrison', '1992-01-21', '435234114', 'james24@ro.com')");
@@ -103,31 +162,34 @@ public class HotelOperation {
 //                stmt.executeUpdate("INSERT INTO Check_in values('53645243', '2019-02-09', '2019-02-12', 3, '23467572', '202')");
 //                stmt.executeUpdate("INSERT INTO Check_in values('24315564', '2017-09-12', '2017-09-13', 1, '87543123', '102')");
 //                stmt.executeUpdate("INSERT INTO Check_in values('78653235', '2017-11-02', '2017-11-07', 1, '45345511', '101')");
-            } finally {
-                close(rs);
-                close(stmt);
-                close(conn);
+            }catch(SQLException e){
+                e.printStackTrace();
             }
+//            finally {
+//                close(rs);
+//                close(stmt);
+//                close(conn);
+//            }
         } catch(Throwable oops) {
             oops.printStackTrace();
         }
     }
 
-    static void close(Connection conn) {
-        if(conn != null) {
-            try { conn.close(); } catch(Throwable whatever) {}
-        }
-    }
+//    static void close(Connection conn) {
+//        if(conn != null) {
+//            try { conn.close(); } catch(Throwable whatever) {}
+//        }
+//    }
 
-    static void close(Statement st) {
-        if(st != null) {
-            try { st.close(); } catch(Throwable whatever) {}
-        }
-    }
+//    static void close(Statement st) {
+//        if(st != null) {
+//            try { st.close(); } catch(Throwable whatever) {}
+//        }
+//    }
 
-    static void close(ResultSet rs) {
-        if(rs != null) {
-            try { rs.close(); } catch(Throwable whatever) {}
-        }
-    }
+//    static void close(ResultSet rs) {
+//        if(rs != null) {
+//            try { rs.close(); } catch(Throwable whatever) {}
+//        }
+//    }
 }

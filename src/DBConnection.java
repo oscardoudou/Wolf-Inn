@@ -12,6 +12,9 @@ public class DBConnection {
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             try{
+                // Load the driver. This creates an instance of the driver
+                // and calls the registerDriver method to make MariaDB Thin
+                // driver, available to clients.
                 conn = DriverManager.getConnection(jdbcURL, user, passwd);
             } catch (SQLException e){
                 e.printStackTrace();
