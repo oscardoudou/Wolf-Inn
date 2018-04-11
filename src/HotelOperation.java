@@ -5,14 +5,10 @@
 import java.sql.*;
 
 public class HotelOperation {
-    private static String user = "yzhan222";
-    private static String passwd = "jlp^zcl*";
-    static private final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/yzhan222";
-
     public static void createHotel(String name, String address, String city, long phone, int manager_id) {
         String sql = "insert into Hotel(name, address, city, phone, manager_id) values(?,?,?,?,?)";
         try {
-            Connection conn = DriverManager.getConnection(jdbcURL, user, passwd);
+            Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, name);
             ptmt.setString(2, address);
@@ -27,24 +23,12 @@ public class HotelOperation {
     }
     public static void run() {
         try {
-
-            // Load the driver. This creates an instance of the driver
-            // and calls the registerDriver method to make MariaDB Thin
-            // driver, available to clients.
-
-           // Class.forName("org.mariadb.jdbc.Driver");
             Connection conn = DBConnection.getConnection();
            Statement stmt = null;
            ResultSet rs = null;
 
             try {
-
-                // Get a connection from the first driver in the
-                // DriverManager list that recognizes the URL jdbcURL
-
-                conn = DriverManager.getConnection(jdbcURL, user, passwd);
-
-                // Create a statement object that will be sending your
+                 // Create a statement object that will be sending your
                 // SQL statements to the DBMS
 
                 stmt = conn.createStatement();
@@ -62,7 +46,7 @@ public class HotelOperation {
                 stmt.executeUpdate("CREATE TABLE Staff (id   INTEGER NOT NULL PRIMARY KEY,name    VARCHAR(20) NOT NULL,rank     VARCHAR(20) NOT NULL)");
                 stmt.executeUpdate("CREATE TABLE Hotel (id INTEGER NOT NULL PRIMARY KEY auto_increment,name VARCHAR(20) NOT NULL,address VARCHAR(50) NOT NULL,city VARCHAR(10) NOT NULL,phone INTEGER UNIQUE,manager_id INTEGER NOT NULL)");
                 stmt.executeUpdate("CREATE TABLE Customer (id  INTEGER NOT NULL PRIMARY KEY,name VARCHAR(20) NOT NULL,dob  DATE NOT NULL,phone INTEGER,email VARCHAR(20) )");
-                stmt.executeUpdate("CREATE TABLE Room (room_id integer PRIMARY KEY, hotel_id integer NOT NULL, max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL, foreign key(hotel_id) REFERENCES Hotel(id))");
+                stmt.executeUpdate("CREATE TABLE Room (room_id integer PRIMARY KEY auto_increment, hotel_id integer NOT NULL, max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL, foreign key(hotel_id) REFERENCES Hotel(id))");
                 stmt.executeUpdate("CREATE TABLE Billing_info(id INTEGER NOT NULL PRIMARY KEY,ssn INTEGER NOT NULL,payment_type VARCHAR(20) NOT NULL,card_number  INTEGER NOT NULL,hotel_card BOOLEAN NOT NULL,check_in BOOLEAN NOT NULL,room_id INTEGER NOT NULL,customer_id INTEGER NOT NULL,FOREIGN KEY(room_id)REFERENCES Room(room_id),FOREIGN KEY(customer_id)REFERENCES Customer(id)    )");
                 stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL,start_date DATE NOT NULL,end_date DATE NOT NULL,guestCnt INTEGER NOT NULL,customer_id INTEGER NOT NULL,room_id INTEGER NOT NULL,foreign key(room_id) REFERENCES Room(room_id),foreign key(customer_id) REFERENCES Customer(id))");
                 stmt.executeUpdate("CREATE TABLE Service_Request (service_request_id integer NOT NULL PRIMARY KEY, room_id integer NOT NULL, submitter_id integer NOT NULL, customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, date varchar(40) NOT NULL, cost float NOT NULL, FOREIGN KEY(room_id)REFERENCES Room(room_id),FOREIGN KEY (submitter_id )REFERENCES Staff(id),FOREIGN KEY (customer_id)REFERENCES Customer (id))");
@@ -70,7 +54,20 @@ public class HotelOperation {
 //
                 createHotel("hotel1","1343 Huston Dr.","Cary",54556421, 1010);
 //                //stmt.executeUpdate("INSERT INTO Room VALUES ('161', 6, 120.00, False)");
-//
+//                rs = stmt.executeQuery("select * from Hotel");
+//                while(rs.next()){
+//                    //Retrieve by column name
+//                    int hotel_id = rs.getInt("id");
+//                    String name = rs.getString("name");
+//                    String address = rs.getString("address");
+//                    String City = rs.getString("city");
+//                    //Display values
+//                    System.out.print("ID: " + hotel_id);
+//                    System.out.print(", name: " + name);
+//                    System.out.print(", address: " + address);
+//                    System.out.println(", city: " + City);
+//                }
+//                rs.close();
 //                stmt.executeUpdate("INSERT INTO Customer values('24235667', 'James Harrison', '1992-01-21', '435234114', 'james24@ro.com')");
 //                stmt.executeUpdate("INSERT INTO Customer values('45345511', 'Ford Rex', '1987-04-30', '923211432', 'fox@fox.com')");
 //                stmt.executeUpdate("INSERT INTO Customer values('87543123', 'Bill Fredson', '1987-11-28', '902343451', 'soing@haha.com')");
@@ -106,7 +103,7 @@ public class HotelOperation {
             } finally {
                 close(rs);
                 close(stmt);
-                close(conn);
+                //close(conn);
             }
         } catch(Throwable oops) {
             oops.printStackTrace();
