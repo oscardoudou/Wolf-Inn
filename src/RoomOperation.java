@@ -3,6 +3,7 @@
 // Relpace all yzhan222 with your unity id and jlp^zcl* with your 9 \d or updated password (if changed)
 
 import java.sql.*;
+import java.util.Scanner;
 
 public class RoomOperation {
 
@@ -21,35 +22,70 @@ public class RoomOperation {
             oops.printStackTrace();
         }
     }
+
+    public static void deleteRoom() {
+        //leave input as ?
+        String sql = "delete from Room where hotel_id = ? and room_id = ? ";
+        System.out.println("Tell me the hotel id for which you are looking at: (e.g. 0");
+        HotelOperation.showHotels();
+        Scanner sc = new Scanner(System.in);
+        int hotelID = sc.nextInt();
+        System.out.println("Tell me which room (id) should be torn down:(e.g. 1)");
+        sc = new Scanner(System.in);
+        int roomID = sc.nextInt();
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            //use ?'s index to assign value
+            ptmt.setInt(1, hotelID);
+            ptmt.setInt(2, roomID);
+            ptmt.execute();
+            System.out.println("A room has been deleted!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void showRooms() {
+        ResultSet rs = null;
+        Connection conn = DBConnection.getConnection();
+        try {
+            Statement  stmt = conn.createStatement();
+            rs = stmt.executeQuery("select * from Room");
+            while (rs.next()) {
+                //Retrieve by column name
+                int room_id = rs.getInt("room_id");
+                int hotel_id = rs.getInt("hotel_id");
+                int max_occu = rs.getInt("max_occu");
+                double rate = rs.getDouble("rate");
+                boolean avai = rs.getBoolean("avai");
+                //Display values
+                System.out.print("room_id: "+ room_id);
+                System.out.print(", hotel_id: " + hotel_id);
+                System.out.print(", max_occu: " + max_occu);
+                System.out.print(", rate: " + rate);
+                System.out.println(", avai: " + avai);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void run() {
         try {
-
-            // Load the driver. This creates an instance of the driver
-            // and calls the registerDriver method to make MariaDB Thin
-            // driver, available to clients.
-
-            // Class.forName("org.mariadb.jdbc.Driver");
             Connection conn = DBConnection.getConnection();
             Statement stmt = null;
             ResultSet rs = null;
 
             try {
-
-                // Get a connection from the first driver in the
-                // DriverManager list that recognizes the URL jdbcURL
-
-
-                // Create a statement object that will be sending your
-                // SQL statements to the DBMS
-
                 stmt = conn.createStatement();
 
                 // Drop existed tables
 //                stmt.executeUpdate("Drop TABLE IF EXISTS Service_Request");
 //                stmt.executeUpdate("Drop TABLE IF EXISTS Billing_info");
 //                stmt.executeUpdate("Drop TABLE IF EXISTS Check_in");
-//                stmt.executeUpdate("Drop TABLE IF EXISTS Room");
-//                stmt.executeUpdate("Drop TABLE IF EXISTS Hotel");
+                stmt.executeUpdate("Drop TABLE IF EXISTS Room");
+ //               stmt.executeUpdate("Drop TABLE IF EXISTS Hotel");
 //                stmt.executeUpdate("Drop TABLE IF EXISTS Customer");
 //                stmt.executeUpdate("Drop TABLE IF EXISTS Staff");
                 // Create the tables
@@ -57,7 +93,7 @@ public class RoomOperation {
 //                stmt.executeUpdate("CREATE TABLE Staff (id   INTEGER NOT NULL PRIMARY KEY,name    VARCHAR(20) NOT NULL,rank     VARCHAR(20) NOT NULL)");
 //                stmt.executeUpdate("CREATE TABLE Hotel (id INTEGER NOT NULL PRIMARY KEY auto_increment,name VARCHAR(20) NOT NULL,address VARCHAR(50) NOT NULL,city VARCHAR(10) NOT NULL,phone INTEGER UNIQUE,manager_id INTEGER NOT NULL)");
 //                stmt.executeUpdate("CREATE TABLE Customer (id  INTEGER NOT NULL PRIMARY KEY,name VARCHAR(20) NOT NULL,dob  DATE NOT NULL,phone INTEGER,email VARCHAR(20) )");
-//                stmt.executeUpdate("CREATE TABLE Room (room_id integer PRIMARY KEY, hotel_id integer NOT NULL, max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL, foreign key(hotel_id) REFERENCES Hotel(id))");
+                stmt.executeUpdate("CREATE TABLE Room (room_id integer PRIMARY KEY auto_increment, hotel_id integer NOT NULL, max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL)");
 //                stmt.executeUpdate("CREATE TABLE Billing_info(id INTEGER NOT NULL PRIMARY KEY,ssn INTEGER NOT NULL,payment_type VARCHAR(20) NOT NULL,card_number  INTEGER NOT NULL,hotel_card BOOLEAN NOT NULL,check_in BOOLEAN NOT NULL,room_id INTEGER NOT NULL,customer_id INTEGER NOT NULL,FOREIGN KEY(room_id)REFERENCES Room(room_id),FOREIGN KEY(customer_id)REFERENCES Customer(id)    )");
 //                stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL,start_date DATE NOT NULL,end_date DATE NOT NULL,guestCnt INTEGER NOT NULL,customer_id INTEGER NOT NULL,room_id INTEGER NOT NULL,foreign key(room_id) REFERENCES Room(room_id),foreign key(customer_id) REFERENCES Customer(id))");
 //                stmt.executeUpdate("CREATE TABLE Service_Request (service_request_id integer NOT NULL PRIMARY KEY, room_id integer NOT NULL, submitter_id integer NOT NULL, customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, date varchar(40) NOT NULL, cost float NOT NULL, FOREIGN KEY(room_id)REFERENCES Room(room_id),FOREIGN KEY (submitter_id )REFERENCES Staff(id),FOREIGN KEY (customer_id)REFERENCES Customer (id))");
@@ -66,7 +102,6 @@ public class RoomOperation {
                 createRoom(1, 2, 78.43, true);
                 createRoom(1, 3, 98.99, false);
 //                //stmt.executeUpdate("INSERT INTO Room VALUES ('161', 6, 120.00, False)");
-                stmt.executeUpdate("select * from Room");
 //                stmt.executeUpdate("INSERT INTO Customer values('24235667', 'James Harrison', '1992-01-21', '435234114', 'james24@ro.com')");
 //                stmt.executeUpdate("INSERT INTO Customer values('45345511', 'Ford Rex', '1987-04-30', '923211432', 'fox@fox.com')");
 //                stmt.executeUpdate("INSERT INTO Customer values('87543123', 'Bill Fredson', '1987-11-28', '902343451', 'soing@haha.com')");

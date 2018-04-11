@@ -11,6 +11,7 @@ public class Menu {
                 case "1":
                     System.out.println("success enter infoprocessing");
                     HotelOperation.initialize();
+                    HotelOperation.showHotels();
                     break;
                 case "2":
                     System.out.println("enter infoprocessing but delete hotel");
@@ -19,6 +20,9 @@ public class Menu {
                 case "3":
                     System.out.println("not enter infoprocessing");
                     RoomOperation.run();
+                    RoomOperation.showRooms();
+                    RoomOperation.deleteRoom();
+                    RoomOperation.showRooms();
                     break;
                 case "4":
                     System.out.println("enter hotel update");
