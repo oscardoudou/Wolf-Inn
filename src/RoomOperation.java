@@ -7,15 +7,16 @@ import java.util.Scanner;
 
 public class RoomOperation {
 
-    public static void createRoom(int hotel_id, int occupa, double rate, boolean avail) {
-        String sql = "insert into Room(hotel_id, max_occu, rate, avai) values(?,?,?,?)";
+    public static void createRoom(int hotel_name, String category, int occupa, double rate, boolean avail) {
+        String sql = "insert into Room(hotel_name, category, max_occu, rate, avai) values(?,?,?,?,?)";
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
-            ptmt.setInt(1, hotel_id);
-            ptmt.setInt(2, occupa);
-            ptmt.setDouble(3, rate);
-            ptmt.setBoolean(4, avail);
+            ptmt.setInt(1, hotel_name);
+            ptmt.setString(2, category);
+            ptmt.setInt(3, occupa);
+            ptmt.setDouble(4, rate);
+            ptmt.setBoolean(5, avail);
             ptmt.execute();
             System.out.println("A new room has been created!");
         } catch(Throwable oops) {
@@ -55,7 +56,7 @@ public class RoomOperation {
                     System.out.println("illegal input");
                     break;
             }
-            sql += " = ? where hotel_id = ? and room_id = ? ";
+            sql += " = ? where hotel_name = ? and room_id = ? ";
             //attention: belew statement shouldn't put before switch,
             // preparedstatement should create only after sql finished, or compile run ptmt have no index which lead to run time error
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -71,7 +72,7 @@ public class RoomOperation {
 
     public static void deleteRoom() {
         //leave input as ?
-        String sql = "delete from Room where hotel_id = ? and room_id = ? ";
+        String sql = "delete from Room where hotel_name = ? and room_id = ? ";
         System.out.println("Tell me the hotel id for which you are looking at: (e.g. 0");
         HotelOperation.showHotels();
         Scanner sc = new Scanner(System.in);
@@ -101,13 +102,15 @@ public class RoomOperation {
             while (rs.next()) {
                 //Retrieve by column name
                 int room_id = rs.getInt("room_id");
-                int hotel_id = rs.getInt("hotel_id");
+                int hotel_name = rs.getInt("hotel_name");
+                String type = rs.getString("category");
                 int max_occu = rs.getInt("max_occu");
                 double rate = rs.getDouble("rate");
                 boolean avai = rs.getBoolean("avai");
                 //Display values
                 System.out.print("room_id: "+ room_id);
-                System.out.print(", hotel_id: " + hotel_id);
+                System.out.print(", hotel_name: " + hotel_name);
+                System.out.print(", category: " + type);
                 System.out.print(", max_occu: " + max_occu);
                 System.out.print(", rate: " + rate);
                 System.out.println(", avai: " + avai);
@@ -124,12 +127,12 @@ public class RoomOperation {
             ResultSet rs = null;
             try {
                 stmt = conn.createStatement();
-                createRoom(1, 2, 78.43, true);
-                createRoom(1, 3, 98.99, false);
+                createRoom(1, "Deluxe",2, 78.43, true);
+                createRoom(1, "Presidential",3, 98.99, false);
             } finally {
                 close(rs);
                 close(stmt);
-               // close(conn);
+                // close(conn);
             }
         } catch(Throwable oops) {
             oops.printStackTrace();
