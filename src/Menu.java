@@ -32,6 +32,7 @@ public class Menu {
                     break;
                 case "5":
                     System.out.println("Bye!");
+                    System.out.println("dsffsd");
                     DBConnection.close();
                     return;
                 default:
