@@ -4,8 +4,10 @@ public class Menu {
     public static void  main(String[] args){
         printMenu();
         DBConnection.initialize();
+        Seed.seed();
         Scanner sc = new Scanner(System.in);
         while(true){
+            System.out.println("====== main menu ======");
             System.out.println("Choose an option: ");
             switch(sc.nextLine()){
                 case "1":
@@ -19,9 +21,9 @@ public class Menu {
                     break;
                 case "3":
                     System.out.println("not enter infoprocessing");
-                    RoomOperation.run();
+                    RoomOperation.initialize();
                     RoomOperation.showRooms();
-                    RoomOperation.deleteRoom();
+                    RoomOperation.updateRoom();
                     RoomOperation.showRooms();
                     break;
                 case "4":
