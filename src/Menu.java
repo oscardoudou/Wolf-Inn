@@ -2,40 +2,47 @@ import java.util.Scanner;
 
 public class Menu {
     public static void  main(String[] args){
-        printMenu();
         DBConnection.initialize();
         Seed.seed();
         Scanner sc = new Scanner(System.in);
+
+        RoomOperation.initialize();
+        RoomOperation.initialize();
         while(true){
-            System.out.println("====== main menu ======");
+            printMenu();
+            System.out.println("\n====== main menu ======");
             System.out.println("Choose an option: ");
             switch(sc.nextLine()){
                 case "1":
-                    System.out.println("success enter infoprocessing");
+                    System.out.println("\nsuccess enter infoprocessing");
                     HotelOperation.initialize();
                     HotelOperation.showHotels();
                     break;
                 case "2":
-                    System.out.println("enter infoprocessing but delete hotel");
+                    System.out.println("\nenter infoprocessing but delete hotel");
                     HotelOperation.deleteHotel();
                     break;
                 case "3":
-                    System.out.println("not enter infoprocessing");
-                    RoomOperation.initialize();
-                    RoomOperation.showRooms();
-                    RoomOperation.updateRoom();
+                    System.out.println("\nnot enter infoprocessing");
+
+                    RoomOperation.isRoomTypeAvailable();
                     RoomOperation.showRooms();
                     break;
                 case "4":
-                    System.out.println("enter hotel update");
+                    System.out.println("\nenter hotel update");
                     HotelOperation.updateHotel();
                     break;
                 case "5":
-                    System.out.println("Bye!");
+                    System.out.println("\nenter room update");
+                    RoomOperation.showRooms();
+                    RoomOperation.updateRoom();
+                    break;
+                case "6":
+                    System.out.println("\n\nBye!");
                     DBConnection.close();
                     return;
                 default:
-                    System.out.println("illegel input");
+                    System.out.println("\n!!! illegel input !!!");
                     break;
             }
         }
