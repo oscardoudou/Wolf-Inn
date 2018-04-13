@@ -7,12 +7,12 @@ import java.util.Scanner;
 
 public class RoomOperation {
 
-    public static void createRoom(int hotel_name, String category, int occupa, double rate, boolean avail) {
-        String sql = "insert into Room(hotel_name, category, max_occu, rate, avai) values(?,?,?,?,?)";
+    public static void createRoom(int hotel_id, String category, int occupa, double rate, boolean avail) {
+        String sql = "insert into Room(hotel_id, category, max_occu, rate, avai) values(?,?,?,?,?)";
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
-            ptmt.setInt(1, hotel_name);
+            ptmt.setInt(1, hotel_id);
             ptmt.setString(2, category);
             ptmt.setInt(3, occupa);
             ptmt.setDouble(4, rate);
@@ -34,7 +34,8 @@ public class RoomOperation {
         System.out.println("Please select an item you want to update:");
         System.out.println("1.max occupancy");
         System.out.println("2.rate");
-        System.out.println("3.availability");
+        System.out.println("3.availability (enter 1 for true and 0 for false)");
+        System.out.println("4.category");
         sc = new Scanner(System.in);
         int choice = sc.nextInt();
         System.out.println("Please input the new value for " + choice + ":");
@@ -52,11 +53,14 @@ public class RoomOperation {
                 case 3:
                     sql += "set avai";
                     break;
+                case 4:
+                    sql += "set category";
+                    break;
                 default:
-                    System.out.println("illegal input");
+                    System.out.println("!!!!! illegal input !!!!!!!!!");
                     break;
             }
-            sql += " = ? where hotel_name = ? and room_id = ? ";
+            sql += " = ? where hotel_id = ? and room_id = ? ";
             //attention: belew statement shouldn't put before switch,
             // preparedstatement should create only after sql finished, or compile run ptmt have no index which lead to run time error
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -64,7 +68,7 @@ public class RoomOperation {
             ptmt.setInt(2, hotelID);
             ptmt.setInt(3, roomID);
             ptmt.execute();
-            System.out.println(hotelID + "'s room " + roomID + " has been update!");
+            System.out.println("=== " + hotelID + "'s room " + roomID + " has been update!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,12 +76,12 @@ public class RoomOperation {
 
     public static void deleteRoom() {
         //leave input as ?
-        String sql = "delete from Room where hotel_name = ? and room_id = ? ";
-        System.out.println("Tell me the hotel id for which you are looking at: (e.g. 0");
+        String sql = "delete from Room where hotel_id = ? and room_id = ? ";
+        System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 0");
         HotelOperation.showHotels();
         Scanner sc = new Scanner(System.in);
         int hotelID = sc.nextInt();
-        System.out.println("Tell me which room (id) should be torn down:(e.g. 1)");
+        System.out.println("\n=== Tell me which room (id) should be torn down:(e.g. 1)");
         sc = new Scanner(System.in);
         int roomID = sc.nextInt();
         try {
@@ -87,10 +91,58 @@ public class RoomOperation {
             ptmt.setInt(1, hotelID);
             ptmt.setInt(2, roomID);
             ptmt.execute();
-            System.out.println("A room has been deleted!");
+            System.out.println("\n=== A room has been deleted! ===");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isRoomAvailable() {
+        int count = 0;
+        String sql = "select count(*) as NO from Room where hotel_id = "; //? and avai = true ";
+        System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 0");
+        HotelOperation.showHotels();
+        Scanner sc = new Scanner(System.in);
+        int hotelID = sc.nextInt();
+        try {
+            Connection conn = DBConnection.getConnection();
+            Statement st = conn.createStatement();;
+            sql += hotelID + " and avai = true";
+            ResultSet rs = st.executeQuery(sql);
+            if(rs.next()) {
+                count = rs.getInt("NO");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count > 0;
+    }
+
+    public static boolean isRoomTypeAvailable() {
+        int count = 0;
+        String sql = "select count(*) as NO from Room where hotel_id = "; //? and avai = true ";
+        System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 0");
+        HotelOperation.showHotels();
+        Scanner sc = new Scanner(System.in);
+        int hotelID = sc.nextInt();
+        System.out.println("\n=== Tell me the room type for which you are looking at: (e.g. deluxe");
+        sc = new Scanner(System.in);
+        String type = sc.nextLine();
+        try {
+            Connection conn = DBConnection.getConnection();
+            Statement st = conn.createStatement();;
+            sql += hotelID + " and avai = true and category = \"";
+            sql += type + "\"";
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery(sql);
+            if(rs.next()) {
+                count = rs.getInt("NO");
+                System.out.println(count);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count > 0;
     }
 
     public static void showRooms() {
@@ -102,14 +154,14 @@ public class RoomOperation {
             while (rs.next()) {
                 //Retrieve by column name
                 int room_id = rs.getInt("room_id");
-                int hotel_name = rs.getInt("hotel_name");
+                int hotel_name = rs.getInt("hotel_id");
                 String type = rs.getString("category");
                 int max_occu = rs.getInt("max_occu");
                 double rate = rs.getDouble("rate");
                 boolean avai = rs.getBoolean("avai");
                 //Display values
                 System.out.print("room_id: "+ room_id);
-                System.out.print(", hotel_name: " + hotel_name);
+                System.out.print(", hotel_id: " + hotel_name);
                 System.out.print(", category: " + type);
                 System.out.print(", max_occu: " + max_occu);
                 System.out.print(", rate: " + rate);
