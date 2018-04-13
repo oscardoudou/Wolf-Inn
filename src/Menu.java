@@ -41,6 +41,9 @@ public class Menu {
                     System.out.println("\n\nBye!");
                     DBConnection.close();
                     return;
+                case "7":
+                    StaffOperations.openStaffMenu();
+                    return;
                 default:
                     System.out.println("\n!!! illegel input !!!");
                     break;
@@ -54,6 +57,7 @@ public class Menu {
         System.out.println("2.Maintaining Service Records");
         System.out.println("3.Billing");
         System.out.println("4.Reports");
-        System.out.println("5.Exit");
+        System.out.println("6.Exit");
+        System.out.println("7. Staff Operations");
     }
 }
