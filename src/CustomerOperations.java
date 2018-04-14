@@ -55,7 +55,7 @@ public class CustomerOperations {
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, customerName);
-           // ps.setDate(2, dob);
+            ps.setDate(2, java.sql.Date.valueOf(dob));
             ps.setString(3, phone);
             ps.setString(4, email);
 
@@ -122,7 +122,7 @@ public class CustomerOperations {
             ptmt.setString(1, entry);
             ptmt.setInt(2, customerId);
             ptmt.execute();
-            System.out.println("Customer ID " + customerId + "has been updated");
+            System.out.println("Customer ID " + customerId + " has been updated");
         } catch (SQLException e) {
             e.printStackTrace();
         }
