@@ -316,7 +316,7 @@ public class StaffOperations {
     }
 
     /**
-     * Return Staff members by role
+     * Return Staff members by role (either job title or department)
      */
     private static void viewStaffByRole() {
 
