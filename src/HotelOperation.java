@@ -5,6 +5,23 @@
 import java.sql.*;
 import java.util.Scanner;
 
+/**
+ * Acknowledgments: This example is a modification of code provided
+ * by Dimitri Rakitine. Further modified by Shrikanth N C for MySql(MariaDB) support
+ * Relpace all yzhan222 with your unity id and jlp^zcl* with your 9 \d or updated password (if changed)
+ * <p>
+ * This class manages all Hotel information for the database
+ * <p>
+ * Operations:
+ * (1) Create / Update / Delete / Show Hotel Information
+ * (2)
+ * (3)
+ *
+ * Source https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html
+ *
+ * @author Yichi Zhang
+ */
+
 public class HotelOperation {
 //    private static String user = "yzhan222";
 //    private static String passwd = "jlp^zcl*";
