@@ -6,11 +6,14 @@ import java.util.Scanner;
  * by Dimitri Rakitine. Further modified by Shrikanth N C for MySql(MariaDB) support
  * Relpace all yzhan222 with your unity id and jlp^zcl* with your 9 \d or updated password (if changed)
  * <p>
- * This class manages all Staff information for the Hotel database
+ * This class manages all Staff information for the database
  * <p>
- * Necessary Operation:
+ * Operations:
  * (1) Enter / Update / Delete Staff Information
  * (2) Assign/deassign a staff member to a particular room (room service)
+ * (3) View individual or all Staff members and information
+ *
+ * Source https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html
  *
  * @author Cosmo Pernie
  */
@@ -19,6 +22,13 @@ public class StaffOperations {
 
     /**
      * Enter a new Staff member into the database
+     *
+     * New Staff ID's are automatically assigned after the database
+     * has been Seeded
+     *
+     * Staff ID's are permanent once assigned
+     *
+     *
      */
     private static void enterStaff() {
 
@@ -79,16 +89,72 @@ public class StaffOperations {
 
     /**
      * Update current Staff member information
+     *
+     * Staff ID's are permanent once assigned, and can therefore
+     * not be updated.
      */
     private static void updateStaff() {
 
-        System.out.println("------ Update Staff Information ------");
+        Scanner in = new Scanner(System.in);
+        String sql = "UPDATE Staff ";
+        System.out.println("------ Update Staff Information ------\n");
 
+        System.out.print("Enter Staff ID: ");
+        int staffId = in.nextInt();
+        in.nextLine();
 
-        System.out.print("Staff ID #: ");
-        //int staffId = in.nextInt();
+        System.out.println("\n--- Choose Attribute to Update ---");
+        System.out.println("1. Name");
+        System.out.println("2. Age");
+        System.out.println("3. Title");
+        System.out.println("4. Hotel");
+        System.out.println("5. Department");
+        System.out.println("6. Phone");
+        System.out.println("7. Address\n");
 
+        System.out.print("Attribute: ");
+        String choice = in.nextLine();
 
+        System.out.print("New Value: ");
+        String entry = in.nextLine();
+
+        try {
+            switch (choice) {
+                case "1":
+                    sql += "SET name";
+                    break;
+                case "2":
+                    sql += "SET age";
+                    break;
+                case "3":
+                    sql += "SET title";
+                    break;
+                case "4":
+                    sql += "SET hotelId";
+                    break;
+                case "5":
+                    sql += "SET department";
+                    break;
+                case "6":
+                    sql += "SET phone";
+                    break;
+                case "7":
+                    sql += "SET address";
+                    break;
+                default:
+                    System.out.println("Invalid Input");
+                    break;
+            }
+            sql += " = ? WHERE id = ?";
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, entry);
+            ptmt.setInt(2, staffId);
+            ptmt.execute();
+            System.out.println("Staff ID " + staffId + "has been updated");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -102,13 +168,13 @@ public class StaffOperations {
         System.out.println("Please enter Staff ID to delete.");
         System.out.print("\nStaff ID: ");
 
-        String staffId = in.nextLine();
+        int staffId = in.nextInt();
+        in.nextLine();
 
-        String sql = "DELETE FROM Staff WHERE id = ?";
+        String sql = "DELETE FROM Staff WHERE id = " + staffId;
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, staffId);
             ps.execute();
 
             System.out.println("Staff Member " + staffId + " has been deleted from the database.");
@@ -126,6 +192,25 @@ public class StaffOperations {
      */
     private static void assignStaff() {
 
+        Scanner in = new Scanner(System.in);
+
+        System.out.println("------ Assign Staff to Room ------");
+        System.out.print("\nEnter Staff ID: ");
+        int staffId = in.nextInt();
+        in.nextLine();
+        System.out.print("\nEnter Room ID: ");
+        int roomId = in.nextInt();
+        in.nextLine();
+
+        String sql = ("UPDATE Staff SET assignedRoomId = " + roomId + " WHERE id = " + staffId);
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.execute();
+            System.out.println("Staff ID" + staffId + " has been assigned to Room " + roomId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -133,6 +218,24 @@ public class StaffOperations {
      */
     private static void deassignStaff() {
 
+        Scanner in = new Scanner(System.in);
+
+        System.out.println("------ Deassign Staff to Room ------");
+        System.out.print("\nEnter Staff ID: ");
+        int staffId = in.nextInt();
+        System.out.print("\nEnter Room ID: ");
+        int roomId = in.nextInt();
+
+        String sql = ("UPDATE Staff SET assignedRoomId = NULL WHERE assignedRoomId = " +
+                roomId + " AND id = " + staffId);
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.execute();
+            System.out.println("Staff ID " + staffId + " has been deassigned from Room " + roomId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -140,16 +243,14 @@ public class StaffOperations {
      */
     private static void viewStaff() {
 
-    }
+        Scanner in = new Scanner(System.in);
 
-    /**
-     * Display all Staff members and information
-     * <p>
-     * Source https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html
-     */
-    private static void viewAllStaff() {
+        System.out.print("Enter Staff ID to View: ");
+        int staffId = in.nextInt();
+        in.nextLine();
+        System.out.println("\nid | name | age | title | hotel | department | phone | address | room assignment");
 
-        String sql = "SELECT * FROM Staff";
+        String sql = ("SELECT * FROM Staff WHERE id=" + staffId);
         try {
 
             Connection conn = DBConnection.getConnection();
@@ -157,7 +258,6 @@ public class StaffOperations {
             ResultSet rs = s.executeQuery(sql);
 
             while (rs.next()) {
-
                 int id = rs.getInt("id");
                 String staffName = rs.getString("name");
                 int age = rs.getInt("age");
@@ -168,10 +268,46 @@ public class StaffOperations {
                 String address = rs.getString("address");
                 int room = rs.getInt("assignedRoomId");
 
-                System.out.println(id + " " + staffName + " " + age + " " + jobTitle +
-                        " " + hotelId + " " + department + " " + phone + " " + address +
-                        " " + room);
+                System.out.println(id + " | " + staffName + " | " + age + " | " + jobTitle +
+                        " | " + hotelId + " | " + department + " | " + phone + " | " + address +
+                        " | " + room);
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Display all Staff members and information
+     */
+    private static void viewAllStaff() {
+
+        System.out.println("------ View All Staff Information ------");
+
+        System.out.println("\nid | name | age | title | hotel | department | phone | address | room assignment");
+
+        String sql = "SELECT * FROM Staff";
+        try {
+
+            Connection conn = DBConnection.getConnection();
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String staffName = rs.getString("name");
+                int age = rs.getInt("age");
+                String jobTitle = rs.getString("title");
+                int hotelId = rs.getInt("hotelId");
+                String department = rs.getString("department");
+                int phone = rs.getInt("phone");
+                String address = rs.getString("address");
+                int room = rs.getInt("assignedRoomId");
+
+                System.out.println(id + " | " + staffName + " | " + age + " | " + jobTitle +
+                        " | " + hotelId + " | " + department + " | " + phone + " | " + address +
+                        " | " + room);
             }
 
         } catch (SQLException e) {
@@ -182,8 +318,9 @@ public class StaffOperations {
     /**
      * Prints the Staff operations Menu
      */
-    public static void printMenu() {
-        System.out.println("\n====== Staff Menu ======");
+    private static void printMenu() {
+
+        System.out.println("\n====== Staff Menu ======\n");
         System.out.println("1. Enter New Staff Member");
         System.out.println("2. Update Staff Information");
         System.out.println("3. Delete Staff Member");
@@ -235,7 +372,7 @@ public class StaffOperations {
                     System.out.println("Returning to Main Menu...");
                     return;
                 default:
-                    System.out.println("Invalid Entry.");
+                    System.out.println("Invalid Entry");
                     break;
             }
         }

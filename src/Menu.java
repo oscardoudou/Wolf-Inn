@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Menu {
     public static void  main(String[] args){
+
         DBConnection.initialize();
         Seed.seed();
         Scanner sc = new Scanner(System.in);
@@ -11,8 +12,8 @@ public class Menu {
 
         while(true){
             printMenu();
-            System.out.println("\n====== main menu ======");
-            System.out.println("Choose an option: ");
+            System.out.println("\n====== Main Menu ======");
+            System.out.print("Choose an option: ");
             switch(sc.nextLine()){
                 case "1":
                     System.out.println("\nsuccess enter infoprocessing");
@@ -54,11 +55,11 @@ public class Menu {
     public static void printMenu(){
         System.out.println("----------------------------------");
         System.out.println("Select operation your want to execute: ");
-        System.out.println("1.Information Processing");
-        System.out.println("2.Maintaining Service Records");
-        System.out.println("3.Billing");
-        System.out.println("4.Reports");
-        System.out.println("6.Exit");
+        System.out.println("1. Information Processing");
+        System.out.println("2. Maintaining Service Records");
+        System.out.println("3. Billing");
+        System.out.println("4. Reports");
+        System.out.println("6. Exit");
         System.out.println("7. Staff Operations");
     }
 }

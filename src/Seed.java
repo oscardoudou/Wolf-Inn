@@ -20,6 +20,8 @@ public class Seed {
                 stmt.executeUpdate("Drop TABLE IF EXISTS Staff");
 
                 // Create the tables
+
+                // Staff Table @author Cosmo
                 stmt.executeUpdate("CREATE TABLE Staff (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
                         "name VARCHAR(20) NOT NULL, " +
                         "age INTEGER NOT NULL, " +
@@ -39,6 +41,34 @@ public class Seed {
 
                 // Enter table information based on demo data
 
+                // Enter Staff Data from Demo Data @author Cosmo
+                stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
+                        "address) VALUES (100, 'Mary', 40, 'Manager', 0001, 'Management', 654, " +
+                        "'90 ABC St , Raleigh NC 27')");
+
+                stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
+                        "address) VALUES (101, 'John', 45, 'Manager', 0002, 'Management', 564, " +
+                        "'798 XYZ St , Rochester NY 54')");
+
+                stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
+                        "address) VALUES (102, 'Carol', 55, 'Manager', 0003, 'Management', 546, " +
+                        "'351 MH St , Greensboro NC 27')");
+
+                stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
+                        "address) VALUES (103, 'Emma', 55, 'Front Desk Staff', 0001, 'Management', 546, " +
+                        "'49 ABC St , Raleigh NC 27')");
+
+                stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
+                        "address) VALUES (104, 'Ava', 55, 'Catering Staff', 0001, 'Catering', 777, " +
+                        "'425 RG St , Raleigh NC 27')");
+
+                stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
+                        "address) VALUES (105, 'Peter', 52, 'Manager', 0004, 'Management', 724, " +
+                        "'475 RG St , Raleigh NC 27')");
+
+                stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
+                        "address) VALUES (106, 'Olivia', 27, 'Front Desk Staff', 0004, 'Management', 799, " +
+                        "'325 PD St , Raleigh NC 27')");
 
             } finally {
                 close(rs);
