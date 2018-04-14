@@ -10,6 +10,7 @@ public class Seed {
             ResultSet rs = null;
             try {
                 stmt = conn.createStatement();
+
                 // Drop existed tables
                 stmt.executeUpdate("Drop TABLE IF EXISTS Service_Request");
                 stmt.executeUpdate("Drop TABLE IF EXISTS Billing_info");

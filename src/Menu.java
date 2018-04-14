@@ -14,7 +14,7 @@ public class Menu {
             printMenu();
             System.out.println("\n====== Main Menu ======");
             System.out.print("Choose an option: ");
-            switch(sc.nextLine()){
+            switch(sc.nextLine()) {
                 case "1":
                     System.out.println("\nsuccess enter infoprocessing");
                     HotelOperation.initialize();
@@ -55,6 +55,7 @@ public class Menu {
             }
         }
     }
+
     public static void printMenu(){
         System.out.println("----------------------------------");
         System.out.println("Select operation your want to execute: ");

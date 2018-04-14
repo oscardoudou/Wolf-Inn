@@ -320,6 +320,53 @@ public class StaffOperations {
      */
     private static void viewStaffByRole() {
 
+        System.out.println("------ View Staff By Role ------");
+
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("\nView Staff by (1) Title or (2) Department: ");
+        int choice = in.nextInt();
+        in.nextLine();
+
+        String sql;
+        if (choice == 1) {
+            System.out.println("Enter Title to select Staff by: ");
+            String title = in.nextLine();
+            sql = ("SELECT * FROM Staff WHERE title = " + title);
+        } else {
+            // choice == 2
+            System.out.println("Enter Department to select Staff by: ");
+            String department = in.nextLine();
+            sql = ("SELECT * FROM Staff WHERE department = " + department);
+        }
+
+        System.out.println("\nid | name | age | title | hotel | department | phone | address | room assignment");
+
+        try {
+
+            Connection conn = DBConnection.getConnection();
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String staffName = rs.getString("name");
+                int age = rs.getInt("age");
+                String jobTitle = rs.getString("title");
+                int hotelId = rs.getInt("hotelId");
+                String department = rs.getString("department");
+                int phone = rs.getInt("phone");
+                String address = rs.getString("address");
+                int room = rs.getInt("assignedRoomId");
+
+                System.out.println(id + " | " + staffName + " | " + age + " | " + jobTitle +
+                        " | " + hotelId + " | " + department + " | " + phone + " | " + address +
+                        " | " + room);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
