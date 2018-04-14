@@ -8,6 +8,7 @@ public class Menu {
 
         RoomOperation.initialize();
         RoomOperation.initialize();
+
         while(true){
             printMenu();
             System.out.println("\n====== main menu ======");
@@ -43,7 +44,7 @@ public class Menu {
                     return;
                 case "7":
                     StaffOperations.openStaffMenu();
-                    return;
+                    break;
                 default:
                     System.out.println("\n!!! illegel input !!!");
                     break;

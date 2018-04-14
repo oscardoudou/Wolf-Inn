@@ -1,6 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 /**
@@ -33,18 +31,21 @@ public class StaffOperations {
 
         System.out.print("\nAge: ");
         int age = in.nextInt();
+        in.nextLine();
 
         System.out.print("\nTitle: ");
         String jobTitle = in.nextLine();
 
         System.out.print("\nHotel ID: ");
         int hotelId = in.nextInt();
+        in.nextLine();
 
         System.out.print("\nDepartment: ");
         String department = in.nextLine();
 
         System.out.print("\nPhone Number: ");
         int phone = in.nextInt();
+        in.nextLine();
 
         System.out.print("\nAddress: ");
         String address = in.nextLine();
@@ -54,28 +55,26 @@ public class StaffOperations {
                 "VALUES(?,?,?,?,?,?,?)";
         try {
             Connection conn = DBConnection.getConnection();
-            PreparedStatement ptmt = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
 
-            ptmt.setString(1, staffName);
-            ptmt.setInt(2, age);
-            ptmt.setString(3, jobTitle);
-            ptmt.setInt(4, hotelId);
-            ptmt.setString(5, department);
-            ptmt.setInt(6, phone);
-            ptmt.setString(7, address);
+            ps.setString(1, staffName);
+            ps.setInt(2, age);
+            ps.setString(3, jobTitle);
+            ps.setInt(4, hotelId);
+            ps.setString(5, department);
+            ps.setInt(6, phone);
+            ps.setString(7, address);
 
-            ptmt.execute();
+            ps.execute();
 
-            System.out.println("Staff member: " + staffName + "has been added to the database.");
+            System.out.println("Staff member: " + staffName + " has been added to the database.");
 
-            conn.close();
-            ptmt.close();
+            //conn.close();
+            //ps.close();
 
         } catch (Throwable t) {
             t.printStackTrace();
         }
-
-        in.close();
     }
 
     /**
@@ -108,20 +107,18 @@ public class StaffOperations {
         String sql = "DELETE FROM Staff WHERE id = ?";
         try {
             Connection conn = DBConnection.getConnection();
-            PreparedStatement ptmt = conn.prepareStatement(sql);
-            ptmt.setString(1, staffId);
-            ptmt.execute();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, staffId);
+            ps.execute();
 
             System.out.println("Staff Member " + staffId + " has been deleted from the database.");
 
-            conn.close();
-            ptmt.close();
+            //conn.close();
+            //ps.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        in.close();
     }
 
     /**
@@ -147,9 +144,54 @@ public class StaffOperations {
 
     /**
      * Display all Staff members and information
+     * <p>
+     * Source https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html
      */
     private static void viewAllStaff() {
 
+        String sql = "SELECT * FROM Staff";
+        try {
+
+            Connection conn = DBConnection.getConnection();
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+            while (rs.next()) {
+
+                int id = rs.getInt("id");
+                String staffName = rs.getString("name");
+                int age = rs.getInt("age");
+                String jobTitle = rs.getString("title");
+                int hotelId = rs.getInt("hotelId");
+                String department = rs.getString("department");
+                int phone = rs.getInt("phone");
+                String address = rs.getString("address");
+                int room = rs.getInt("assignedRoomId");
+
+                System.out.println(id + " " + staffName + " " + age + " " + jobTitle +
+                        " " + hotelId + " " + department + " " + phone + " " + address +
+                        " " + room);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Prints the Staff operations Menu
+     */
+    public static void printMenu() {
+        System.out.println("\n====== Staff Menu ======");
+        System.out.println("1. Enter New Staff Member");
+        System.out.println("2. Update Staff Information");
+        System.out.println("3. Delete Staff Member");
+        System.out.println("4. View Staff Member Information");
+        System.out.println("5. View All Staff Information");
+        System.out.println("6. Assign Staff to Room");
+        System.out.println("7. Deassign Staff from Room");
+        System.out.println("8. Return to Main Menu");
     }
 
     /**
@@ -161,18 +203,8 @@ public class StaffOperations {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.println("\n====== Staff Menu ======");
-        System.out.println("1. Enter New Staff Member");
-        System.out.println("2. Update Staff Information");
-        System.out.println("3. Delete Staff Member");
-        System.out.println("4. View Staff Member Information");
-        System.out.println("5. View All Staff Information");
-        System.out.println("6. Assign Staff to Room");
-        System.out.println("7. Deassign Staff from Room");
-        System.out.println("8. Return to Main Menu");
-
         while (true) {
-
+            printMenu();
             System.out.print("\nEnter Selection: ");
             String choice = in.nextLine();
             System.out.println();
@@ -195,17 +227,18 @@ public class StaffOperations {
                     break;
                 case "6":
                     assignStaff();
-                    return;
+                    break;
                 case "7":
                     deassignStaff();
-                    return;
+                    break;
                 case "8":
-                    in.close();
+                    System.out.println("Returning to Main Menu...");
                     return;
                 default:
                     System.out.println("Invalid Entry.");
                     break;
             }
         }
+        //in.close();
     }
 }
