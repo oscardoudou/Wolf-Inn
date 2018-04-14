@@ -10,7 +10,7 @@ public class Menu {
         RoomOperation.initialize();
         RoomOperation.initialize();
 
-        while(true){
+        while(true) {
             printMenu();
             System.out.println("\n====== Main Menu ======");
             System.out.print("Choose an option: ");
@@ -46,6 +46,9 @@ public class Menu {
                 case "7":
                     StaffOperations.openStaffMenu();
                     break;
+                case "8":
+                    CustomerOperations.openCustomerMenu();
+                    break;
                 default:
                     System.out.println("\n!!! illegel input !!!");
                     break;
@@ -61,5 +64,6 @@ public class Menu {
         System.out.println("4. Reports");
         System.out.println("6. Exit");
         System.out.println("7. Staff Operations");
+        System.out.println("8. Customer Operations");
     }
 }

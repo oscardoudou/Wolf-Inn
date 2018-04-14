@@ -18,6 +18,8 @@ import java.util.Scanner;
  * @author Cosmo Pernie
  */
 
+// TODO: Create "return information on staff grouped by their role" function.
+
 public class StaffOperations {
 
     /**
@@ -27,8 +29,6 @@ public class StaffOperations {
      * has been Seeded
      *
      * Staff ID's are permanent once assigned
-     *
-     *
      */
     private static void enterStaff() {
 
@@ -250,7 +250,7 @@ public class StaffOperations {
         in.nextLine();
         System.out.println("\nid | name | age | title | hotel | department | phone | address | room assignment");
 
-        String sql = ("SELECT * FROM Staff WHERE id=" + staffId);
+        String sql = ("SELECT * FROM Staff WHERE id = " + staffId);
         try {
 
             Connection conn = DBConnection.getConnection();
@@ -316,6 +316,13 @@ public class StaffOperations {
     }
 
     /**
+     * Return Staff members by role
+     */
+    private static void viewStaffByRole() {
+
+    }
+
+    /**
      * Prints the Staff operations Menu
      */
     private static void printMenu() {
@@ -326,9 +333,10 @@ public class StaffOperations {
         System.out.println("3. Delete Staff Member");
         System.out.println("4. View Staff Member Information");
         System.out.println("5. View All Staff Information");
-        System.out.println("6. Assign Staff to Room");
-        System.out.println("7. Deassign Staff from Room");
-        System.out.println("8. Return to Main Menu");
+        System.out.println("6. View Staff by Role");
+        System.out.println("7. Assign Staff to Room");
+        System.out.println("8. Deassign Staff from Room");
+        System.out.println("9. Return to Main Menu");
     }
 
     /**
@@ -363,12 +371,15 @@ public class StaffOperations {
                     viewAllStaff();
                     break;
                 case "6":
-                    assignStaff();
+                    viewStaffByRole();
                     break;
                 case "7":
-                    deassignStaff();
+                    assignStaff();
                     break;
                 case "8":
+                    deassignStaff();
+                    break;
+                case "9":
                     System.out.println("Returning to Main Menu...");
                     return;
                 default:
