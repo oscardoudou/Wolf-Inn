@@ -73,9 +73,9 @@ public class Seed {
                         "cardNumber INTEGER)");
 
                 // Create Services Table to hold Types of Services and associated Costs @author Cosmo Pernie
-                stmt.executeUpdate("CREATE TABLE Services (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
-                        "serviceName VARCHAR(20) NOT NULL, " +
-                        "fee INTEGER NOT NULL)");
+//                stmt.executeUpdate("CREATE TABLE Services (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
+//                        "serviceName VARCHAR(20) NOT NULL, " +
+//                        "fee INTEGER NOT NULL)");
 
                 // Enter Staff Data from Demo Data @author Cosmo Pernie
                 stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +

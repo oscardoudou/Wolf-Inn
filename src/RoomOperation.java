@@ -101,7 +101,7 @@ public class RoomOperation {
     public static boolean isRoomAvailable() {
         int count = 0;
         String sql = "where hotel_id = "; //? and avai = true ";
-        System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 0");
+        System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 1");
         HotelOperation.showHotels();
         Scanner sc = new Scanner(System.in);
         int hotelID = sc.nextInt();
@@ -118,12 +118,12 @@ public class RoomOperation {
 
     public static boolean isRoomTypeAvailable() {
         int count = 0;
-        String sql = "select count(*) as NO from Room where hotel_id = "; //? and avai = true ";
-        System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 0");
+        String sql = "where hotel_id = "; //? and avai = true ";
+        System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 1");
         HotelOperation.showHotels();
         Scanner sc = new Scanner(System.in);
         int hotelID = sc.nextInt();
-        System.out.println("\n=== Tell me the room type for which you are looking at: (e.g. deluxe");
+        System.out.println("\n=== Tell me the room type for which you are looking at: (e.g. Deluxe");
         sc = new Scanner(System.in);
         String type = sc.nextLine();
         try {
@@ -131,12 +131,7 @@ public class RoomOperation {
             Statement st = conn.createStatement();;
             sql += hotelID + " and avai = true and category = \"";
             sql += type + "\"";
-            System.out.println(sql);
-            ResultSet rs = st.executeQuery(sql);
-            if(rs.next()) {
-                count = rs.getInt("NO");
-                System.out.println(count);
-            }
+            count = showRooms(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -152,7 +147,7 @@ public class RoomOperation {
             rs = stmt.executeQuery("select * from Room "+tail);
             while (rs.next()) {
                 //Retrieve by column name
-                int room_id = rs.getInt("room_id");
+                int room_id = rs.getInt("room_no");
                 int hotel_name = rs.getInt("hotel_id");
                 String type = rs.getString("category");
                 int max_occu = rs.getInt("max_occu");

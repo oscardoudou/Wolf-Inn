@@ -24,7 +24,7 @@ public class Menu {
                     break;
                 case "3":
                     System.out.println("\nnot enter infoprocessing");
-                    RoomOperation.isRoomTypeAvailable();
+                    System.out.println("availability is "+RoomOperation.isRoomTypeAvailable());
                     break;
                 case "4":
                     System.out.println("\nenter hotel update");
