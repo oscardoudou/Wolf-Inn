@@ -71,6 +71,11 @@ public class Seed {
                         "billingAddress VARCHAR(50) NOT NULL, " +
                         "paymentMethod VARCHAR(20) NOT NULL, " +
                         "cardNumber INTEGER)");
+
+                // Create Services Table to hold Types of Services and associated Costs
+                stmt.executeUpdate("CREATE TABLE Services (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
+                        "serviceName VARCHAR(20) NOT NULL, " +
+                        "fee INTEGER NOT NULL)");
                // ------------------------------------------------------------------------------------------------------
 
                 stmt.executeUpdate("insert into Room (room_no, hotel_id, category, max_occu, rate, avai) " +
@@ -141,6 +146,13 @@ public class Seed {
 
                 stmt.executeUpdate("INSERT INTO Billing (customerId, ssn, billingAddress, paymentMethod) " +
                         "VALUES (1004, '440-9328', '24 BST Dr , Dallas TX 14', 'cash')");
+
+                // Enter Services Data from Demo Data @author Cosmo Pernie
+                stmt.executeUpdate("INSERT INTO Services (serviceName, fee) VALUES ('phone bills', 5)");
+                stmt.executeUpdate("INSERT INTO Services (serviceName, fee) VALUES ('dry cleaning', 16)");
+                stmt.executeUpdate("INSERT INTO Services (serviceName, fee) VALUES ('gyms', 15)");
+                stmt.executeUpdate("INSERT INTO Services (serviceName, fee) VALUES ('room service', 10)");
+                stmt.executeUpdate("INSERT INTO Services (serviceName, fee) VALUES ('special requests', 20)");
                 //------------------------------------------------------------------------------------------------------
 
 
