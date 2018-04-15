@@ -18,8 +18,6 @@ import java.util.Scanner;
  * @author Cosmo Pernie
  */
 
-// TODO: Create "return information on staff grouped by their role" function.
-
 public class StaffOperations {
 
     /**
@@ -324,7 +322,7 @@ public class StaffOperations {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.print("\nView Staff by (1) Title or (2) Department: ");
+        System.out.print("\nView Staff Members by (1) Title or (2) Department: ");
         int choice = in.nextInt();
         in.nextLine();
 

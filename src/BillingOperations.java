@@ -14,6 +14,9 @@ import java.util.Scanner;
  *
  * Source https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html
  *
+ * NOTE: Billing ID's are automatically assigned when created associated
+ * with a Customer ID
+ *
  * @author Cosmo Pernie
  */
 
@@ -22,43 +25,51 @@ public class BillingOperations {
     /**
      * Enter a new Billing Information into the database
      *
-     * New Customer ID's are automatically assigned after the database
+     * New Billing ID's are automatically assigned after the database
      * has been Seeded
      *
-     * Customer ID's are permanent once assigned
+     * Billing ID's are permanent once assigned
      */
     private static void enterBillingInformation() {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.println("------ Enter New Customer Information ------");
+        System.out.println("------ Enter New Billing Information ------");
 
-        System.out.print("\nName: ");
-        String customerName = in.nextLine();
+        System.out.print("\nCustomer ID: ");
+        int customerId = in.nextInt();
+        in.nextLine();
 
-        System.out.print("\nDOB (YYYY-MM-DD): ");
-        String dob = in.nextLine();
+        System.out.print("\nSSN: ");
+        int ssn = in.nextInt();
+        in.nextLine();
 
-        System.out.print("\nPhone: ");
-        String phone = in.nextLine();
+        System.out.print("\nBilling Address: ");
+        String billingAddress = in.nextLine();
 
-        System.out.print("\nEmail: ");
-        String email = in.nextLine();
+        System.out.print("\nPayment Method: ");
+        String paymentMethod = in.nextLine();
+
+        System.out.println("Card Number: ");
+        int cardNumber = in.nextInt();
+        in.nextLine();
 
         // NOTE: Staff ID is automatically assigned in database (auto_increment)
-        String sql = "INSERT INTO Customer(name, dob, phone, email) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO Billing(customerId, ssn, billingAddress, paymentMethod, cardNumber)" +
+                " VALUES(?,?,?,?,?)";
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, customerName);
-            ps.setDate(2, java.sql.Date.valueOf(dob));
-            ps.setString(3, phone);
-            ps.setString(4, email);
+            ps.setInt(1, customerId);
+            ps.setInt(2, ssn);
+            ps.setString(3, billingAddress);
+            ps.setString(4, paymentMethod);
+            ps.setInt(5, cardNumber);
 
             ps.execute();
 
-            System.out.println("Customer: " + customerName + " has been added to the database.");
+            System.out.println("Billing record for Customer ID" + customerId + " has been added to the database.");
 
             //conn.close();
             //ps.close();
@@ -71,24 +82,25 @@ public class BillingOperations {
     /**
      * Update current Billing Information information
      *
-     * Customer ID's are permanent once assigned, and can therefore
+     * Billing ID's are permanent once assigned, and can therefore
      * not be updated.
      */
     private static void updateBillingInformation() {
 
         Scanner in = new Scanner(System.in);
-        String sql = "UPDATE Customer ";
-        System.out.println("------ Update Customer Information ------\n");
+        String sql = "UPDATE Billing ";
+        System.out.println("------ Update Billing Information ------\n");
 
-        System.out.print("Enter Customer ID: ");
-        int customerId = in.nextInt();
+        System.out.print("Enter Billing ID: ");
+        int billingId = in.nextInt();
         in.nextLine();
 
         System.out.println("\n--- Choose Attribute to Update ---");
-        System.out.println("1. Name");
-        System.out.println("2. DOB");
-        System.out.println("3. Phone");
-        System.out.println("4. Email");
+        System.out.println("1. Customer ID");
+        System.out.println("2. SSN");
+        System.out.println("3. Billing Address");
+        System.out.println("4. Payment Method");
+        System.out.println("4. Card Number");
 
         System.out.print("Attribute: ");
         String choice = in.nextLine();
@@ -99,16 +111,18 @@ public class BillingOperations {
         try {
             switch (choice) {
                 case "1":
-                    sql += "SET name";
+                    sql += "SET customerId";
                     break;
                 case "2":
-                    sql += "SET dob";
+                    sql += "SET ssn";
                     break;
                 case "3":
-                    sql += "SET phone";
+                    sql += "SET billingAddress";
                     break;
                 case "4":
-                    sql += "SET email";
+                    sql += "SET paymentMethod";
+                case "5":
+                    sql += "SET cardNumber";
                 default:
                     System.out.println("Invalid Input");
                     break;
@@ -117,9 +131,9 @@ public class BillingOperations {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, entry);
-            ptmt.setInt(2, customerId);
+            ptmt.setInt(2, billingId);
             ptmt.execute();
-            System.out.println("Customer ID " + customerId + " has been updated");
+            System.out.println("Billing ID " + billingId + " has been updated");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -132,20 +146,21 @@ public class BillingOperations {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.println("------ Delete Customer Information ------");
-        System.out.println("Please enter Customer ID to delete.");
-        System.out.print("\nCustomer ID: ");
+        System.out.println("------ Delete Billing Information ------");
+        System.out.println("Please enter Billing ID to delete.");
+        System.out.print("\nBilling ID: ");
 
-        int customerId = in.nextInt();
+        int billingId = in.nextInt();
         in.nextLine();
 
-        String sql = "DELETE FROM Customer WHERE id = " + customerId;
+        String sql = "DELETE FROM Billing WHERE id = " + billingId;
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.execute();
 
-            System.out.println("Customer Member " + customerId + " has been deleted from the database.");
+            System.out.println("Information associated with Billing ID  " + billingId + " has been " +
+                    "deleted from the database.");
 
             //conn.close();
             //ps.close();
@@ -161,14 +176,30 @@ public class BillingOperations {
      */
     private static void viewBillingInformation() {
 
+        System.out.println("------ View Billing Information ------");
+
         Scanner in = new Scanner(System.in);
 
-        System.out.print("Enter Customer ID to View: ");
-        int staffId = in.nextInt();
+        System.out.print("\nView Billing Information by (1) Customer ID or (2) Billing ID: ");
+        int choice = in.nextInt();
         in.nextLine();
-        System.out.println("\nid | name | dob | phone | email");
 
-        String sql = ("SELECT * FROM Customer WHERE id = " + staffId);
+        String sql;
+        if (choice == 1) {
+            System.out.println("Enter Customer ID to select by: ");
+            int customerId = in.nextInt();
+            in.nextLine();
+            sql = ("SELECT * FROM Billing WHERE customerId = " + customerId);
+        } else {
+            // choice == 2
+            System.out.println("Enter Billing ID to select by: ");
+            int billingId = in.nextInt();
+            in.nextLine();
+            sql = ("SELECT * FROM Billing WHERE id = " + billingId);
+        }
+
+        System.out.println("\nid | customerId | ssn | billingAddress | paymentMethod | cardNumber");
+
         try {
 
             Connection conn = DBConnection.getConnection();
@@ -177,13 +208,14 @@ public class BillingOperations {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String customerName = rs.getString("name");
-                int phone = rs.getInt("phone");
-                Date age = rs.getDate("dob");
-                String email = rs.getString("email");
+                int customerId = rs.getInt("customerId");
+                String ssn = rs.getString("ssn");
+                String billingAddress = rs.getString("billingAddress");
+                String paymentMethod = rs.getString("paymentMethod");
+                int cardNumber = rs.getInt("cardNumber");
 
-                System.out.println(id + " | " + customerName + " | " + phone + " | " + age +
-                        " | " + email);
+                System.out.println(id + " | " + customerId + " | " + ssn + " | " + billingAddress +
+                        " | " + paymentMethod  + " | " + cardNumber);
             }
 
         } catch (SQLException e) {

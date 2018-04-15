@@ -14,16 +14,17 @@ public class Seed {
                 // Drop existed tables
                 // change Service_Request to Service_Record;
                 stmt.executeUpdate("Drop TABLE IF EXISTS Service_Record");
-                stmt.executeUpdate("Drop TABLE IF EXISTS Billing_info");
                 stmt.executeUpdate("Drop TABLE IF EXISTS Check_in");
                 stmt.executeUpdate("Drop TABLE IF EXISTS Room");
                 stmt.executeUpdate("Drop TABLE IF EXISTS Hotel");
                 stmt.executeUpdate("Drop TABLE IF EXISTS Customer");
                 stmt.executeUpdate("Drop TABLE IF EXISTS Staff");
+                stmt.executeUpdate("Drop TABLE IF EXISTS Billing");
 
                 // Create and Populate the Tables
                 //------------------------------------------------------------------------------------------------------
                 // Create Staff Table @author Cosmo Pernie
+                // assignedRoomId can be NULL if not Staff not assigned
                 stmt.executeUpdate("CREATE TABLE Staff (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
                         "name VARCHAR(20) NOT NULL, " +
                         "age INTEGER NOT NULL, " +
@@ -38,15 +39,17 @@ public class Seed {
                 stmt.executeUpdate("CREATE TABLE Customer (id INTEGER NOT NULL PRIMARY KEY auto_increment," +
                         "name VARCHAR(20) NOT NULL, " +
                         "dob DATE NOT NULL, " +
-                        "phone INTEGER, " +
-                        "email VARCHAR(20))");
+                        "phone INTEGER NOT NULL, " +
+                        "email VARCHAR(20) NOT NULL)");
 
                 // Create Billing Table @author Cosmo Pernie
+                // cardNumber can be NULL through cash option
                 stmt.executeUpdate("CREATE TABLE Billing(id INTEGER PRIMARY KEY auto_increment, " +
+                        "customerId INTEGER NOT NULL, " +
                         "ssn VARCHAR(20) NOT NULL, " +
                         "billingAddress VARCHAR(50) NOT NULL, " +
                         "paymentMethod VARCHAR(20) NOT NULL, " +
-                        "cardNumber INTEGER NOT NULL");
+                        "cardNumber INTEGER");
                 //------------------------------------------------------------------------------------------------------
 
 
@@ -100,16 +103,16 @@ public class Seed {
                         "'1985-01-30', 213, 'lucy@gmail.com')");
 
                 // Enter Billing Data from Demo Data @author Cosmo Pernie
-                stmt.executeUpdate("INSERT INTO Billing (id, ssn, billingAddress, paymentMethod, cardNumber) " +
-                                "VALUES (1001, '593-9846', '980 TRT St , Raleigh NC', 'credit', 1052)");
+                stmt.executeUpdate("INSERT INTO Billing (customerId, ssn, billingAddress, paymentMethod, " +
+                        "cardNumber) VALUES (1001, '593-9846', '980 TRT St , Raleigh NC', 'credit', 1052)");
 
-                stmt.executeUpdate("INSERT INTO Billing (id, ssn, billingAddress, paymentMethod, cardNumber) " +
-                        "VALUES (1002, '777-8352', '7720 MHT St , Greensboro NC', 'hotel credit', 3020)");
+                stmt.executeUpdate("INSERT INTO Billing (customerId, ssn, billingAddress, paymentMethod, " +
+                        "cardNumber) VALUES (1002, '777-8352', '7720 MHT St , Greensboro NC', 'hotel credit', 3020)");
 
-                stmt.executeUpdate("INSERT INTO Billing (id, ssn, billingAddress, paymentMethod, cardNumber) " +
-                        "VALUES (1003, '858-9430', '231 DRY St , Rochester NY 78', 'credit', 2497)");
+                stmt.executeUpdate("INSERT INTO Billing (customerId, ssn, billingAddress, paymentMethod, " +
+                        "cardNumber) VALUES (1003, '858-9430', '231 DRY St , Rochester NY 78', 'credit', 2497)");
 
-                stmt.executeUpdate("INSERT INTO Billing (id, ssn, billingAddress, paymentMethod) " +
+                stmt.executeUpdate("INSERT INTO Billing (customerId, ssn, billingAddress, paymentMethod) " +
                         "VALUES (1004, '440-9328', '24 BST Dr , Dallas TX 14', 'cash')");
                 //------------------------------------------------------------------------------------------------------
 
