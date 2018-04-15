@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class RoomOperation {
+    private static Connection conn = null;
     public static void createRoom() {
         Scanner sc = null;
         System.out.println("Please enter a room number:");
@@ -32,7 +33,7 @@ public class RoomOperation {
     public static void createRoom(int room_no, int hotel_id, String category, int occupa, double rate, int avail) {
         String sql = "insert into Room(room_no, hotel_id, category, max_occu, rate, avai) values(?,?,?,?,?,?)";
         try {
-            Connection conn = DBConnection.getConnection();
+            conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setInt(1, room_no);
             ptmt.setInt(2, hotel_id);
@@ -65,7 +66,7 @@ public class RoomOperation {
         sc = new Scanner(System.in);
         String attr = sc.nextLine();
         try {
-            Connection conn = DBConnection.getConnection();
+            conn = DBConnection.getConnection();
             switch (choice) {
                 case 1:
                     sql += "set max_occu";
@@ -102,22 +103,38 @@ public class RoomOperation {
         String sql = "delete from Room where hotel_id = ? and room_no = ? ";
         System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 0");
         HotelOperation.showHotels();
+
         Scanner sc = new Scanner(System.in);
         int hotelID = sc.nextInt();
         System.out.println("\n=== Tell me which room (id) should be torn down:(e.g. 1)");
         sc = new Scanner(System.in);
         int roomID = sc.nextInt();
+        // TRANSACTION BEGINS
         try {
-            Connection conn = DBConnection.getConnection();
-            PreparedStatement ptmt = conn.prepareStatement(sql);
-            //use ?'s index to assign value
-            ptmt.setInt(1, hotelID);
-            ptmt.setInt(2, roomID);
-            ptmt.execute();
-            System.out.println("\n=== A room has been deleted! ===");
-        } catch (SQLException e) {
-            e.printStackTrace();
+            conn = DBConnection.getConnection();
+            try {
+                conn.setAutoCommit(false);
+                PreparedStatement ptmt = conn.prepareStatement(sql);
+                //use ?'s index to assign value
+                ptmt.setInt(1, hotelID);
+                ptmt.setInt(2, roomID);
+                ptmt.execute();
+                System.out.println("\n=== A room has been deleted! ===");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conn.commit();
+        }catch (Exception e) {
+            try{
+                if(conn!=null)
+                    conn.rollback();
+                System.out.println("\nsuccessfully rollback!\n\n");
+            }catch(SQLException se2){
+                se2.printStackTrace();
+            }
         }
+
+        // TRANSACTION ENDS
     }
 
     public static boolean isRoomAvailable() {
@@ -128,7 +145,7 @@ public class RoomOperation {
         Scanner sc = new Scanner(System.in);
         int hotelID = sc.nextInt();
         try {
-            Connection conn = DBConnection.getConnection();
+            conn = DBConnection.getConnection();
             Statement st = conn.createStatement();;
             sql += hotelID + " and avai = 1";
             count = showRooms(sql);
@@ -149,7 +166,7 @@ public class RoomOperation {
         sc = new Scanner(System.in);
         String type = sc.nextLine();
         try {
-            Connection conn = DBConnection.getConnection();
+            conn = DBConnection.getConnection();
             Statement st = conn.createStatement();;
             sql += hotelID + " and avai = 1 and category = \"";
             sql += type + "\"";
@@ -163,7 +180,7 @@ public class RoomOperation {
     public static int showRooms(String tail) {
         ResultSet rs = null;
         int c = 0;
-        Connection conn = DBConnection.getConnection();
+        conn = DBConnection.getConnection();
         try {
             Statement  stmt = conn.createStatement();
             rs = stmt.executeQuery("select * from Room "+tail);
