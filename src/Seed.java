@@ -50,6 +50,7 @@ public class Seed {
                         "billingAddress VARCHAR(50) NOT NULL, " +
                         "paymentMethod VARCHAR(20) NOT NULL, " +
                         "cardNumber INTEGER");
+
                 //------------------------------------------------------------------------------------------------------
 
 
