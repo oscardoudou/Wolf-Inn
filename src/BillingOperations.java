@@ -9,25 +9,25 @@ import java.util.Scanner;
  * This class manages all Staff information for the database
  * <p>
  * Operations:
- * (1) Enter / Update / Delete Customer Information
- * (3) View individual Customer information
+ * (1) Enter / Update / BillingInformation
+ * (3) View Billing Information based on Billing ID or Customer ID
  *
  * Source https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html
  *
  * @author Cosmo Pernie
  */
 
-public class CustomerOperations {
+public class BillingOperations {
 
     /**
-     * Enter a new Customer member into the database
+     * Enter a new Billing Information into the database
      *
      * New Customer ID's are automatically assigned after the database
      * has been Seeded
      *
      * Customer ID's are permanent once assigned
      */
-    private static void enterCustomer() {
+    private static void enterBillingInformation() {
 
         Scanner in = new Scanner(System.in);
 
@@ -69,12 +69,12 @@ public class CustomerOperations {
     }
 
     /**
-     * Update current Customer information
+     * Update current Billing Information information
      *
      * Customer ID's are permanent once assigned, and can therefore
      * not be updated.
      */
-    private static void updateCustomer() {
+    private static void updateBillingInformation() {
 
         Scanner in = new Scanner(System.in);
         String sql = "UPDATE Customer ";
@@ -126,9 +126,9 @@ public class CustomerOperations {
     }
 
     /**
-     * Delete a Customer member from the database
+     * Delete a Billing Information from the database
      */
-    private static void deleteCustomer() {
+    private static void deleteBillingInformation() {
 
         Scanner in = new Scanner(System.in);
 
@@ -156,9 +156,10 @@ public class CustomerOperations {
     }
 
     /**
-     * Display a specific Customer information
+     * Display a specific Billing information by either Billing ID
+     * or Customer ID
      */
-    private static void viewCustomer() {
+    private static void viewBillingInformation() {
 
         Scanner in = new Scanner(System.in);
 
@@ -195,11 +196,11 @@ public class CustomerOperations {
      */
     private static void printMenu() {
 
-        System.out.println("\n====== Customer Menu ======\n");
-        System.out.println("1. Enter New Customer");
-        System.out.println("2. Update Customer Information");
-        System.out.println("3. Delete Customer");
-        System.out.println("4. View Customer Information");
+        System.out.println("\n====== Billing Menu ======\n");
+        System.out.println("1. Enter New Billing Information");
+        System.out.println("2. Update Billing Information");
+        System.out.println("3. Delete Billing Information");
+        System.out.println("4. View Billing Information");
         System.out.println("5. Return to Main Menu");
     }
 
@@ -208,7 +209,7 @@ public class CustomerOperations {
      * Gives user access to all Customer functions, and communicates
      * with the database based on user input.
      */
-    public static void openCustomerMenu() {
+    public static void openBillingMenu() {
 
         Scanner in = new Scanner(System.in);
 
@@ -220,16 +221,16 @@ public class CustomerOperations {
 
             switch (choice) {
                 case "1":
-                    enterCustomer();
+                    enterBillingInformation();
                     break;
                 case "2":
-                    updateCustomer();
+                    updateBillingInformation();
                     break;
                 case "3":
-                    deleteCustomer();
+                    deleteBillingInformation();
                     break;
                 case "4":
-                    viewCustomer();
+                    viewBillingInformation();
                     break;
                 case "5":
                     System.out.println("Returning to Main Menu...");
