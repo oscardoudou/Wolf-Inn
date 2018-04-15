@@ -45,7 +45,7 @@ public class Seed {
                 stmt.executeUpdate("CREATE TABLE Room (room_id INTEGER PRIMARY KEY auto_increment, hotel_id integer NOT NULL, category VARCHAR(20) NOT NULL, max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL)");
                 stmt.executeUpdate("CREATE TABLE Billing_info(id INTEGER PRIMARY KEY auto_increment,ssn INTEGER NOT NULL,payment_type VARCHAR(20) NOT NULL, card_number INTEGER NOT NULL, hotel_card BOOLEAN NOT NULL,check_in BOOLEAN NOT NULL,room_id INTEGER NOT NULL,customer_id INTEGER NOT NULL)");
                 stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL auto_increment,start_date DATE NOT NULL,end_date DATE NOT NULL,guestCnt INTEGER NOT NULL,customer_id INTEGER NOT NULL,room_id INTEGER NOT NULL,foreign key(room_id) REFERENCES Room(room_id))");
-                stmt.executeUpdate("CREATE TABLE Service_Record (service_record_id integer NOT NULL PRIMARY KEY auto_increment, checkin_id integer NOT NULL, room_id integer NOT NULL, submitter_id integer NOT NULL, customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, date varchar(40) NOT NULL, cost float NOT NULL)");
+                stmt.executeUpdate("CREATE TABLE Service_Record (service_record_id integer NOT NULL PRIMARY KEY auto_increment, checkin_id integer NOT NULL, room_id integer NOT NULL, hotel_id integer NOT NULL, submitter_id integer NOT NULL, customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, date varchar(40) NOT NULL, cost float NOT NULL)");
 
                 // Enter Staff Data from Demo Data @author Cosmo Pernie
                 stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
