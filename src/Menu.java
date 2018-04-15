@@ -23,16 +23,13 @@ public class Menu {
                     HotelOperation.deleteHotel();
                     break;
                 case "3":
-                    System.out.println("\nnot enter infoprocessing");
-                    System.out.println("availability is "+RoomOperation.isRoomTypeAvailable());
+                    RoomOperation.openRoomMenu();
                     break;
                 case "4":
                     System.out.println("\nenter hotel update");
                     HotelOperation.updateHotel();
                     break;
                 case "5":
-                    System.out.println("\nenter room update");
-                    RoomOperation.updateRoom();
                     break;
                 case "6":
                     System.out.println("\n\nBye!");
