@@ -328,14 +328,14 @@ public class StaffOperations {
 
         String sql;
         if (choice == 1) {
-            System.out.println("Enter Title to select Staff by: ");
+            System.out.print("Enter Title to select Staff by: ");
             String title = in.nextLine();
-            sql = ("SELECT * FROM Staff WHERE title = " + title);
+            sql = ("SELECT * FROM Staff WHERE title = '" + title + "'");
         } else {
             // choice == 2
-            System.out.println("Enter Department to select Staff by: ");
+            System.out.print("Enter Department to select Staff by: ");
             String department = in.nextLine();
-            sql = ("SELECT * FROM Staff WHERE department = " + department);
+            sql = ("SELECT * FROM Staff WHERE department = '" + department + "'");
         }
 
         System.out.println("\nid | name | age | title | hotel | department | phone | address | room assignment");
