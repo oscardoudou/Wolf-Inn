@@ -7,8 +7,6 @@ public class Menu {
         Seed.seed();
         Scanner sc = new Scanner(System.in);
 
-        RoomOperation.initialize();
-        RoomOperation.initialize();
 
         while(true) {
             printMenu();
@@ -26,9 +24,7 @@ public class Menu {
                     break;
                 case "3":
                     System.out.println("\nnot enter infoprocessing");
-
                     RoomOperation.isRoomTypeAvailable();
-                    RoomOperation.showRooms();
                     break;
                 case "4":
                     System.out.println("\nenter hotel update");
@@ -36,7 +32,6 @@ public class Menu {
                     break;
                 case "5":
                     System.out.println("\nenter room update");
-                    RoomOperation.showRooms();
                     RoomOperation.updateRoom();
                     break;
                 case "6":
@@ -53,10 +48,10 @@ public class Menu {
                     BillingOperations.openBillingMenu();
                     break;
                 case "10":
-                    ServiceRecord.enterServiceRec();
+                    //ServiceRecord.enterServiceRec();
                     break;
                 case"11":
-                    ServiceRecord.retrieveServiceRec();
+                   // ServiceRecord.retrieveServiceRec();
                     break;
                 default:
                     System.out.println("\n!!! illegel input !!!");

@@ -23,6 +23,25 @@ public class Seed {
 
                 // Create and Populate the Tables
                 //------------------------------------------------------------------------------------------------------
+                stmt.executeUpdate("CREATE TABLE Hotel (id INTEGER NOT NULL PRIMARY KEY auto_increment," +
+                        "name VARCHAR(20) NOT NULL," +
+                        "address VARCHAR(50) NOT NULL," +
+                        "city VARCHAR(10) NOT NULL," +
+                        "phone INTEGER UNIQUE," +
+                        "manager_id INTEGER NOT NULL)");
+                stmt.executeUpdate("CREATE TABLE Room (room_no INTEGER not null, " +
+                        "hotel_id integer NOT NULL, " +
+                        "category VARCHAR(20) NOT NULL, " +
+                        "max_occu integer(40) NOT NULL, " +
+                        "rate float NOT NULL, " +
+                        "avai boolean NOT NULL)");
+//                stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL auto_increment," +
+//                        "start_date DATE NOT NULL,end_date DATE NOT NULL,guestCnt INTEGER NOT NULL," +
+//                        "customer_id INTEGER NOT NULL,room_no INTEGER NOT NULL,foreign key(room_no) REFERENCES Room(room_no))");
+//                stmt.executeUpdate("CREATE TABLE Service_Record (service_record_id integer NOT NULL PRIMARY KEY auto_increment, " +
+//                        "checkin_id integer NOT NULL, room_id integer NOT NULL, hotel_id integer NOT NULL, submitter_id integer NOT NULL, " +
+//                        "customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, " +
+//                        "date varchar(40) NOT NULL, cost float NOT NULL)");
                 // Create Staff Table @author Cosmo Pernie
                 // assignedRoomId can be NULL if not Staff not assigned
                 stmt.executeUpdate("CREATE TABLE Staff (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
@@ -51,14 +70,24 @@ public class Seed {
                         "paymentMethod VARCHAR(20) NOT NULL, " +
                         "cardNumber INTEGER");
 
-                //------------------------------------------------------------------------------------------------------
 
 
-                stmt.executeUpdate("CREATE TABLE Hotel (id INTEGER NOT NULL PRIMARY KEY auto_increment,name VARCHAR(20) NOT NULL,address VARCHAR(50) NOT NULL,city VARCHAR(10) NOT NULL,phone INTEGER UNIQUE,manager_id INTEGER NOT NULL)");
-                stmt.executeUpdate("CREATE TABLE Room (room_id INTEGER PRIMARY KEY auto_increment, hotel_id integer NOT NULL, category VARCHAR(20) NOT NULL, max_occu integer(40) NOT NULL, rate float NOT NULL, avai boolean NOT NULL)");
-                stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL auto_increment,start_date DATE NOT NULL,end_date DATE NOT NULL,guestCnt INTEGER NOT NULL,customer_id INTEGER NOT NULL,room_id INTEGER NOT NULL,foreign key(room_id) REFERENCES Room(room_id))");
-                stmt.executeUpdate("CREATE TABLE Service_Record (service_record_id integer NOT NULL PRIMARY KEY auto_increment, checkin_id integer NOT NULL, room_id integer NOT NULL, hotel_id integer NOT NULL, submitter_id integer NOT NULL, customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, date varchar(40) NOT NULL, cost float NOT NULL)");
 
+
+               // ------------------------------------------------------------------------------------------------------
+
+                stmt.executeUpdate("insert into Room (room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(1, 1, 'Economy', 1, 100, true)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(2, 1, 'Deluxe', 2, 200, true)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(3, 2, 'Economy', 1, 100, true)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(2, 3, 'Executive', 3, 1000, false)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(1, 4, 'Presidential', 4, 5000, true)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(5, 1, 'Deluxe', 2, 200, true)");
 
                 //------------------------------------------------------------------------------------------------------
                 // Enter Staff Data from Demo Data @author Cosmo Pernie

@@ -7,16 +7,17 @@ import java.util.Scanner;
 
 public class RoomOperation {
 
-    public static void createRoom(int hotel_id, String category, int occupa, double rate, boolean avail) {
-        String sql = "insert into Room(hotel_id, category, max_occu, rate, avai) values(?,?,?,?,?)";
+    public static void createRoom(int room_no, int hotel_id, String category, int occupa, double rate, boolean avail) {
+        String sql = "insert into Room(room_no, hotel_id, category, max_occu, rate, avai) values(?,?,?,?,?)";
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
-            ptmt.setInt(1, hotel_id);
-            ptmt.setString(2, category);
-            ptmt.setInt(3, occupa);
-            ptmt.setDouble(4, rate);
-            ptmt.setBoolean(5, avail);
+            ptmt.setInt(1, room_no);
+            ptmt.setInt(2, hotel_id);
+            ptmt.setString(3, category);
+            ptmt.setInt(4, occupa);
+            ptmt.setDouble(5, rate);
+            ptmt.setBoolean(6, avail);
             ptmt.execute();
             System.out.println("A new room has been created!");
         } catch(Throwable oops) {
@@ -60,7 +61,7 @@ public class RoomOperation {
                     System.out.println("!!!!! illegal input !!!!!!!!!");
                     break;
             }
-            sql += " = ? where hotel_id = ? and room_id = ? ";
+            sql += " = ? where hotel_id = ? and room_no = ? ";
             //attention: belew statement shouldn't put before switch,
             // preparedstatement should create only after sql finished, or compile run ptmt have no index which lead to run time error
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -76,7 +77,7 @@ public class RoomOperation {
 
     public static void deleteRoom() {
         //leave input as ?
-        String sql = "delete from Room where hotel_id = ? and room_id = ? ";
+        String sql = "delete from Room where hotel_id = ? and room_no = ? ";
         System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 0");
         HotelOperation.showHotels();
         Scanner sc = new Scanner(System.in);
@@ -99,7 +100,7 @@ public class RoomOperation {
 
     public static boolean isRoomAvailable() {
         int count = 0;
-        String sql = "select count(*) as NO from Room where hotel_id = "; //? and avai = true ";
+        String sql = "where hotel_id = "; //? and avai = true ";
         System.out.println("\n=== Tell me the hotel id for which you are looking at: (e.g. 0");
         HotelOperation.showHotels();
         Scanner sc = new Scanner(System.in);
@@ -108,10 +109,7 @@ public class RoomOperation {
             Connection conn = DBConnection.getConnection();
             Statement st = conn.createStatement();;
             sql += hotelID + " and avai = true";
-            ResultSet rs = st.executeQuery(sql);
-            if(rs.next()) {
-                count = rs.getInt("NO");
-            }
+            count = showRooms(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -145,12 +143,13 @@ public class RoomOperation {
         return count > 0;
     }
 
-    public static void showRooms() {
+    public static int showRooms(String tail) {
         ResultSet rs = null;
+        int c = 0;
         Connection conn = DBConnection.getConnection();
         try {
             Statement  stmt = conn.createStatement();
-            rs = stmt.executeQuery("select * from Room");
+            rs = stmt.executeQuery("select * from Room "+tail);
             while (rs.next()) {
                 //Retrieve by column name
                 int room_id = rs.getInt("room_id");
@@ -166,29 +165,12 @@ public class RoomOperation {
                 System.out.print(", max_occu: " + max_occu);
                 System.out.print(", rate: " + rate);
                 System.out.println(", avai: " + avai);
+                c ++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void initialize() {
-        try {
-            Connection conn = DBConnection.getConnection();
-            Statement stmt = null;
-            ResultSet rs = null;
-            try {
-                stmt = conn.createStatement();
-                createRoom(1, "Deluxe",2, 78.43, true);
-                createRoom(1, "Presidential",3, 98.99, false);
-            } finally {
-                close(rs);
-                close(stmt);
-                // close(conn);
-            }
-        } catch(Throwable oops) {
-            oops.printStackTrace();
-        }
+        return c;
     }
 
     static void close(Connection conn) {
