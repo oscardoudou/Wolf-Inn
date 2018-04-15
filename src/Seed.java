@@ -12,6 +12,7 @@ public class Seed {
                 stmt = conn.createStatement();
 
                 // Drop existed tables
+                // change Service_Request to Service_Record;
                 stmt.executeUpdate("Drop TABLE IF EXISTS Service_Request");
                 stmt.executeUpdate("Drop TABLE IF EXISTS Billing_info");
                 stmt.executeUpdate("Drop TABLE IF EXISTS Check_in");
