@@ -53,7 +53,10 @@ public class Menu {
                     BillingOperations.openBillingMenu();
                     break;
                 case "10":
-                    // ServiceRecord.enterServiceRec();
+                    ServiceRecord.enterServiceRec();
+                    break;
+                case"11":
+                    ServiceRecord.retrieveServiceRec();
                     break;
                 default:
                     System.out.println("\n!!! illegel input !!!");
@@ -67,13 +70,14 @@ public class Menu {
         System.out.println("Select operation your want to execute: ");
         System.out.println("1. Information Processing");
         System.out.println("2. Maintaining Service Records");
-        System.out.println("3. ???");
+        System.out.println("3. This is for hotel test, would be merged into infomation processing later");
         System.out.println("4. Reports");
         System.out.println("6. Exit");
         System.out.println("7. Staff Operations");
         System.out.println("8. Customer Operations");
         System.out.println("9. Billing Operations");
-        System.out.println("10. Maintain Service Records");
+        System.out.println("10.test for enterServiceRec");
+        System.out.println("11.test for retrieveServiceRec");
 
     }
 }
