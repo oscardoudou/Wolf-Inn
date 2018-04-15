@@ -1,7 +1,3 @@
-// Acknowledgments: This example is a modification of code provided
-// by Dimitri Rakitine. Further modified by Shrikanth N C for MySql(MariaDB) support
-// Relpace all yzhan222 with your unity id and jlp^zcl* with your 9 \d or updated password (if changed)
-
 import java.sql.*;
 import java.util.Scanner;
 

@@ -45,10 +45,10 @@ public class Menu {
                     BillingOperations.openBillingMenu();
                     break;
                 case "10":
-                    //ServiceRecord.enterServiceRec();
+                    ServiceRecord.enterServiceRec();
                     break;
-                case"11":
-                   // ServiceRecord.retrieveServiceRec();
+                case "11":
+                    ServiceRecord.retrieveServiceRec();
                     break;
                 default:
                     System.out.println("\n!!! illegel input !!!");
