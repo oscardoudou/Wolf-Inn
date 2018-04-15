@@ -186,13 +186,13 @@ public class BillingOperations {
 
         String sql;
         if (choice == 1) {
-            System.out.println("Enter Customer ID to select by: ");
+            System.out.print("Enter Customer ID to select by: ");
             int customerId = in.nextInt();
             in.nextLine();
             sql = ("SELECT * FROM Billing WHERE customerId = " + customerId);
         } else {
             // choice == 2
-            System.out.println("Enter Billing ID to select by: ");
+            System.out.print("Enter Billing ID to select by: ");
             int billingId = in.nextInt();
             in.nextLine();
             sql = ("SELECT * FROM Billing WHERE id = " + billingId);

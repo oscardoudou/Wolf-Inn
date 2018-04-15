@@ -22,7 +22,7 @@ public class Seed {
                 stmt.executeUpdate("Drop TABLE IF EXISTS Billing");
 
                 // Create and Populate the Tables
-                //------------------------------------------------------------------------------------------------------
+
                 stmt.executeUpdate("CREATE TABLE Hotel (id INTEGER NOT NULL PRIMARY KEY auto_increment," +
                         "name VARCHAR(20) NOT NULL," +
                         "address VARCHAR(50) NOT NULL," +
@@ -42,6 +42,8 @@ public class Seed {
 //                        "checkin_id integer NOT NULL, room_id integer NOT NULL, hotel_id integer NOT NULL, submitter_id integer NOT NULL, " +
 //                        "customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, " +
 //                        "date varchar(40) NOT NULL, cost float NOT NULL)");
+
+                //------------------------------------------------------------------------------------------------------
                 // Create Staff Table @author Cosmo Pernie
                 // assignedRoomId can be NULL if not Staff not assigned
                 stmt.executeUpdate("CREATE TABLE Staff (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
@@ -55,7 +57,7 @@ public class Seed {
                         "assignedRoomId INTEGER)");
 
                 // Create Customer Table @author Cosmo Pernie
-                stmt.executeUpdate("CREATE TABLE Customer (id INTEGER NOT NULL PRIMARY KEY auto_increment," +
+                stmt.executeUpdate("CREATE TABLE Customer (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
                         "name VARCHAR(20) NOT NULL, " +
                         "dob DATE NOT NULL, " +
                         "phone INTEGER NOT NULL, " +
@@ -63,17 +65,12 @@ public class Seed {
 
                 // Create Billing Table @author Cosmo Pernie
                 // cardNumber can be NULL through cash option
-                stmt.executeUpdate("CREATE TABLE Billing(id INTEGER PRIMARY KEY auto_increment, " +
+                stmt.executeUpdate("CREATE TABLE Billing (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
                         "customerId INTEGER NOT NULL, " +
                         "ssn VARCHAR(20) NOT NULL, " +
                         "billingAddress VARCHAR(50) NOT NULL, " +
                         "paymentMethod VARCHAR(20) NOT NULL, " +
-                        "cardNumber INTEGER");
-
-
-
-
-
+                        "cardNumber INTEGER)");
                // ------------------------------------------------------------------------------------------------------
 
                 stmt.executeUpdate("insert into Room (room_no, hotel_id, category, max_occu, rate, avai) " +
