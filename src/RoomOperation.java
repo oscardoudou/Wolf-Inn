@@ -6,9 +6,31 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class RoomOperation {
+    public static void createRoom() {
+        Scanner sc = null;
+        System.out.println("Please enter a room number:");
+        sc = new Scanner(System.in);
+        int room_no = sc.nextInt();
+        System.out.println("Please enter the room's hotel ID:");
+        sc = new Scanner(System.in);
+        int hotel_id = sc.nextInt();
+        System.out.println("Please enter the room category:");
+        sc = new Scanner(System.in);
+        String category = sc.nextLine();
+        System.out.println("Please enter the max occupancy:");
+        sc = new Scanner(System.in);
+        int occ = sc.nextInt();
+        System.out.println("Please enter the nightly rate:");
+        sc = new Scanner(System.in);
+        double rate = sc.nextDouble();
+        System.out.println("Please enter if the room is available: (1 for true and 0 for false)");
+        sc = new Scanner(System.in);
+        int avai = sc.nextInt();
+        createRoom(room_no, hotel_id, category, occ, rate, avai);
+    }
 
-    public static void createRoom(int room_no, int hotel_id, String category, int occupa, double rate, boolean avail) {
-        String sql = "insert into Room(room_no, hotel_id, category, max_occu, rate, avai) values(?,?,?,?,?)";
+    public static void createRoom(int room_no, int hotel_id, String category, int occupa, double rate, int avail) {
+        String sql = "insert into Room(room_no, hotel_id, category, max_occu, rate, avai) values(?,?,?,?,?,?)";
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -17,7 +39,7 @@ public class RoomOperation {
             ptmt.setString(3, category);
             ptmt.setInt(4, occupa);
             ptmt.setDouble(5, rate);
-            ptmt.setBoolean(6, avail);
+            ptmt.setInt(6, avail);
             ptmt.execute();
             System.out.println("A new room has been created!");
         } catch(Throwable oops) {
@@ -39,7 +61,7 @@ public class RoomOperation {
         System.out.println("4.category");
         sc = new Scanner(System.in);
         int choice = sc.nextInt();
-        System.out.println("Please input the new value for " + choice + ":");
+        System.out.println("Please input the new value for item " + choice + ":");
         sc = new Scanner(System.in);
         String attr = sc.nextLine();
         try {
@@ -108,7 +130,7 @@ public class RoomOperation {
         try {
             Connection conn = DBConnection.getConnection();
             Statement st = conn.createStatement();;
-            sql += hotelID + " and avai = true";
+            sql += hotelID + " and avai = 1";
             count = showRooms(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -129,7 +151,7 @@ public class RoomOperation {
         try {
             Connection conn = DBConnection.getConnection();
             Statement st = conn.createStatement();;
-            sql += hotelID + " and avai = true and category = \"";
+            sql += hotelID + " and avai = 1 and category = \"";
             sql += type + "\"";
             count = showRooms(sql);
         } catch (SQLException e) {
@@ -152,7 +174,7 @@ public class RoomOperation {
                 String type = rs.getString("category");
                 int max_occu = rs.getInt("max_occu");
                 double rate = rs.getDouble("rate");
-                boolean avai = rs.getBoolean("avai");
+                int avai = rs.getInt("avai");
                 //Display values
                 System.out.print("room_id: "+ room_id);
                 System.out.print(", hotel_id: " + hotel_name);
@@ -184,5 +206,58 @@ public class RoomOperation {
         if(rs != null) {
             try { rs.close(); } catch(Throwable whatever) {}
         }
+    }
+
+    public static void printMenu() {
+        System.out.println("\n====== Room Menu ======\n");
+        System.out.println("1. Create New Room");
+        System.out.println("2. Update Room Information");
+        System.out.println("3. Delete Room");
+        System.out.println("4. View All Room Information");
+        System.out.println("5. Check Room Availability");
+        System.out.println("6. Check Room Type Availability");
+        System.out.println("7. Deassign Staff from Room");
+        System.out.println("8. Return to Main Menu");
+    }
+
+    public static void openRoomMenu() {
+
+        Scanner in = new Scanner(System.in);
+
+        while (true) {
+            printMenu();
+            System.out.print("\nEnter Selection: ");
+            String choice = in.nextLine();
+            System.out.println();
+
+            switch (choice) {
+                case "1":
+                    createRoom();
+                    break;
+                case "2":
+                    updateRoom();
+                    break;
+                case "3":
+                    deleteRoom();
+                    break;
+                case "4":
+                    String sql = "";
+                    showRooms(sql);
+                    break;
+                case "5":
+                    isRoomAvailable();
+                    break;
+                case "7":
+                    isRoomTypeAvailable();
+                    break;
+                case "8":
+                    System.out.println("Returning to Main Menu...");
+                    return;
+                default:
+                    System.out.println("Invalid Entry");
+                    break;
+            }
+        }
+        //in.close();
     }
 }
