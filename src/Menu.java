@@ -49,6 +49,9 @@ public class Menu {
                 case "8":
                     CustomerOperations.openCustomerMenu();
                     break;
+                case "9":
+                    ServiceRecord.enterServiceRec();
+                    break;
                 default:
                     System.out.println("\n!!! illegel input !!!");
                     break;
@@ -66,5 +69,6 @@ public class Menu {
         System.out.println("6. Exit");
         System.out.println("7. Staff Operations");
         System.out.println("8. Customer Operations");
+        System.out.println("9. Maintain Service Records");
     }
 }
