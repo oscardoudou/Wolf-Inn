@@ -72,26 +72,11 @@ public class Seed {
                         "paymentMethod VARCHAR(20) NOT NULL, " +
                         "cardNumber INTEGER)");
 
-                // Create Services Table to hold Types of Services and associated Costs
+                // Create Services Table to hold Types of Services and associated Costs @author Cosmo Pernie
                 stmt.executeUpdate("CREATE TABLE Services (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
                         "serviceName VARCHAR(20) NOT NULL, " +
                         "fee INTEGER NOT NULL)");
-               // ------------------------------------------------------------------------------------------------------
 
-                stmt.executeUpdate("insert into Room (room_no, hotel_id, category, max_occu, rate, avai) " +
-                        "values(1, 1, 'Economy', 1, 100, true)");
-                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
-                        "values(2, 1, 'Deluxe', 2, 200, true)");
-                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
-                        "values(3, 2, 'Economy', 1, 100, true)");
-                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
-                        "values(2, 3, 'Executive', 3, 1000, false)");
-                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
-                        "values(1, 4, 'Presidential', 4, 5000, true)");
-                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
-                        "values(5, 1, 'Deluxe', 2, 200, true)");
-
-                //------------------------------------------------------------------------------------------------------
                 // Enter Staff Data from Demo Data @author Cosmo Pernie
                 stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
                         "address) VALUES (100, 'Mary', 40, 'Manager', 0001, 'Management', 654, " +
@@ -155,6 +140,19 @@ public class Seed {
                 stmt.executeUpdate("INSERT INTO Services (serviceName, fee) VALUES ('special requests', 20)");
                 //------------------------------------------------------------------------------------------------------
 
+
+                stmt.executeUpdate("insert into Room (room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(1, 1, 'Economy', 1, 100, true)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(2, 1, 'Deluxe', 2, 200, true)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(3, 2, 'Economy', 1, 100, true)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(2, 3, 'Executive', 3, 1000, false)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(1, 4, 'Presidential', 4, 5000, true)");
+                stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
+                        "values(5, 1, 'Deluxe', 2, 200, true)");
 
             } finally {
                 close(rs);

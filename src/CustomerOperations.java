@@ -194,7 +194,6 @@ public class CustomerOperations {
      * Prints the Customer operations Menu
      */
     private static void printMenu() {
-
         System.out.println("\n====== Customer Menu ======\n");
         System.out.println("1. Enter New Customer");
         System.out.println("2. Update Customer Information");
