@@ -14,6 +14,8 @@ import java.util.Scanner;
  *
  * Source https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html
  *
+ * Transaction source: https://www.tutorialspoint.com/jdbc/commit-rollback.htm
+ *
  * @author Cosmo Pernie
  */
 
@@ -45,11 +47,16 @@ public class CustomerOperations {
         System.out.print("\nEmail: ");
         String email = in.nextLine();
 
-        // NOTE: Staff ID is automatically assigned in database (auto_increment)
+        // NOTE: Customer ID is automatically assigned in database (auto_increment)
         String sql = "INSERT INTO Customer(name, dob, phone, email) VALUES(?,?,?,?)";
+        Connection conn = null;
+        PreparedStatement ps;
         try {
-            Connection conn = DBConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = DBConnection.getConnection();
+            ps = conn.prepareStatement(sql);
+
+            // Set auto-commit to false
+            conn.setAutoCommit(false);
 
             ps.setString(1, customerName);
             ps.setDate(2, java.sql.Date.valueOf(dob));
@@ -58,13 +65,24 @@ public class CustomerOperations {
 
             ps.execute();
 
-            System.out.println("Customer: " + customerName + " has been added to the database.");
+            // Commit Data
+            conn.commit();
 
+            System.out.println("Customer: " + customerName + " has been added to the database.");
             //conn.close();
             //ps.close();
+        } catch (SQLException s) {
 
-        } catch (Throwable t) {
-            t.printStackTrace();
+            s.printStackTrace();
+
+            // Rollback Data in the case of an SQL Error
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
         }
     }
 
@@ -191,6 +209,37 @@ public class CustomerOperations {
     }
 
     /**
+     * View all Customer Information
+     */
+    private static void viewAllCustomers() {
+
+        System.out.println("------ View All Customer Information ------");
+
+        System.out.println("\nid | name | dob | phone | email");
+
+        String sql = "SELECT * FROM Customer";
+        try {
+
+            Connection conn = DBConnection.getConnection();
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String dob = rs.getString("dob");
+                int phone = rs.getInt("phone");
+                String email = rs.getString("email");
+
+                System.out.println(id + " | " + name + " | " + dob + " | " + phone + " | " + email);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Prints the Customer operations Menu
      */
     private static void printMenu() {
@@ -198,8 +247,9 @@ public class CustomerOperations {
         System.out.println("1. Enter New Customer");
         System.out.println("2. Update Customer Information");
         System.out.println("3. Delete Customer");
-        System.out.println("4. View Customer Information");
-        System.out.println("5. Return to Main Menu");
+        System.out.println("4. View Specific Customer Information");
+        System.out.println("5. View All Customer Information");
+        System.out.println("6. Return to Main Menu");
     }
 
     /**
@@ -231,6 +281,9 @@ public class CustomerOperations {
                     viewCustomer();
                     break;
                 case "5":
+                    viewAllCustomers();
+                    break;
+                case "6":
                     System.out.println("Returning to Main Menu...");
                     return;
                 default:
