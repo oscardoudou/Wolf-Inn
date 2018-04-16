@@ -96,7 +96,7 @@ public class HotelOperation {
                     sql += "set manager_id";
                     break;
                 default:
-                    System.out.println("illegel input");
+                    System.out.println("illegal input");
                     break;
             }
             sql += " = ? where name = ? ";

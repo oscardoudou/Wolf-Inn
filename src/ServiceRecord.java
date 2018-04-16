@@ -99,7 +99,7 @@ public class ServiceRecord {
                     sql += "set complete";
                     break;
                 default:
-                    System.out.println("illegel input");
+                    System.out.println("illegal input");
                     break;
             }
             sql += " = ? where customer_id = ? and room_id = ? ";

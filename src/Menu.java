@@ -50,7 +50,7 @@ public class Menu {
                     ServiceRecord.retrieveServiceRec();
                     break;
                 default:
-                    System.out.println("\n!!! illegel input !!!");
+                    System.out.println("\n!!! illegal input !!!");
                     break;
             }
         }
