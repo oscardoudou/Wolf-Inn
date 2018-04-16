@@ -23,8 +23,9 @@ public class Menu {
                     RoomOperation.openRoomMenu();
                     break;
                 case "4":
-                    System.out.println("\nenter hotel update");
-                    HotelOperation.updateHotel();
+                    System.out.println("\nenter occupancy update");
+                    OccupancyReport.getHotelOccupancy();
+                    //HotelOperation.updateHotel();
                     break;
                 case "5":
                     System.out.println("enter service record");
