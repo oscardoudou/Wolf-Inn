@@ -63,26 +63,29 @@ public class CustomerOperations {
             ps.setString(3, phone);
             ps.setString(4, email);
 
-            ps.execute();
+            boolean success = ps.execute();
 
             // Commit Data
-            conn.commit();
-
-            System.out.println("Customer: " + customerName + " has been added to the database.");
+            if (success) {
+                conn.commit();
+                System.out.println("Customer: " + customerName + " has been added to the database.");
+            } else {
+                // Rollback Data
+                try {
+                    if (conn != null) {
+                        conn.rollback();
+                    }
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
             //conn.close();
             //ps.close();
         } catch (SQLException s) {
 
             s.printStackTrace();
 
-            // Rollback Data in the case of an SQL Error
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
+
         }
     }
 
