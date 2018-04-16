@@ -25,6 +25,7 @@ public class Menu {
                 case "4":
                     System.out.println("\nenter occupancy update");
                     OccupancyReport.getHotelOccupancy();
+                    OccupancyReport.getRoomTypeOccupancy();
                     //HotelOperation.updateHotel();
                     break;
                 case "5":
