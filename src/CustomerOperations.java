@@ -75,17 +75,14 @@ public class CustomerOperations {
                     if (conn != null) {
                         conn.rollback();
                     }
-                } catch (Throwable t) {
-                    t.printStackTrace();
+                } catch (SQLException s) {
+                    s.printStackTrace();
                 }
             }
             //conn.close();
             //ps.close();
-        } catch (SQLException s) {
-
-            s.printStackTrace();
-
-
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 
