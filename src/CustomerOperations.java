@@ -63,16 +63,21 @@ public class CustomerOperations {
             ps.setString(3, phone);
             ps.setString(4, email);
 
-            boolean success = ps.execute();
+            // executeUpdate() returns either
+            // (1) the row count for SQL statements or
+            // (2) 0 for SQL statements that return nothing
+            int success = ps.executeUpdate();
 
-            // Commit Data
-            if (success) {
+            // Commit Data, row count returned should be 1 since
+            // entering 1 new row to Customer table.
+            if (success == 1) {
                 conn.commit();
                 System.out.println("Customer: " + customerName + " has been added to the database.");
             } else {
                 // Rollback Data
                 try {
                     if (conn != null) {
+                        System.out.println("Enter new Customer failed.");
                         conn.rollback();
                     }
                 } catch (SQLException s) {
