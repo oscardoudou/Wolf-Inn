@@ -79,6 +79,8 @@ public class ServiceRecord {
         System.out.println("1.Date");
         System.out.println("2.Cost");
         System.out.println("3.Complete");
+        //probably has unexpected scan here if last sc = sc.nextInt();
+        //if last readin is sc.nextLine() as well, probably has no issue here, refer to hotel update operation
         sc = new Scanner(System.in);
         String choice = sc.nextLine();
         System.out.println(choice);
