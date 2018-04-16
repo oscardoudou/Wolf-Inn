@@ -37,9 +37,10 @@ public class ServiceRecord {
         int customer_id = sc.nextInt();
         System.out.println("SubmitterID");
         int submitter_id = sc.nextInt();
-        System.out.print("Date:");
+        System.out.println("Date:");
+        sc = new Scanner(System.in);
         String date = sc.nextLine();
-        System.out.println("\nCost:");
+        System.out.println("Cost:");
         float cost = sc.nextFloat();
         boolean complete = false;
 
@@ -75,7 +76,7 @@ public class ServiceRecord {
         //Again why we use loop to update?
         //Because we don't know which several attr you want to update, for those you dont wanna change, you need give default value
         //which is impossible when use sql string mechanism like (att1, attr2, att3) (?,?,?)
-        System.out.println("Please select the attribute you want to  update from 3 choice, below:");
+        System.out.println("Please select the attribute you want to  update from 3 choice, below:(only input number)");
         System.out.println("1.Date");
         System.out.println("2.Cost");
         System.out.println("3.Complete");
@@ -88,7 +89,7 @@ public class ServiceRecord {
         String attr_s = null;
         float attr_f = 0;
         Boolean attr_b = false;
-        System.out.print("Please input the new attribtue you want to give:");
+        System.out.print("Please input the new attribtue you want to give:(complete should be true or fasle)");
         switch (choice) {
             case "1":
                 sql += "set date";
