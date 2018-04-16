@@ -39,10 +39,12 @@ public class Seed {
 //                stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL auto_increment," +
 //                        "start_date DATE NOT NULL,end_date DATE NOT NULL,guestCnt INTEGER NOT NULL," +
 //                        "customer_id INTEGER NOT NULL,room_no INTEGER NOT NULL,foreign key(room_no) REFERENCES Room(room_no))");
+                //Create Service_Record Table @author Yichi Zhang
                 stmt.executeUpdate("CREATE TABLE Service_Record (service_record_id integer NOT NULL PRIMARY KEY auto_increment, " +
-                        "checkin_id integer NOT NULL, room_id integer NOT NULL, hotel_id integer NOT NULL, submitter_id integer NOT NULL, " +
-                        "customer_id integer NOT NULL, type varchar(10) NOT NULL, complete int NOT NULL, " +
-                        "date varchar(40) NOT NULL, cost float NOT NULL)");
+                        "checkin_id integer NOT NULL, " +
+                        "staff_id integer NOT NULL, " +
+                        "service_name varchar(10) NOT NULL, " +
+                        "fee float NOT NULL)");
 
                 //------------------------------------------------------------------------------------------------------
                 // Create Staff Table @author Cosmo Pernie

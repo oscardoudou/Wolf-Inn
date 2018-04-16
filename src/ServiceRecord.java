@@ -25,41 +25,27 @@ public class ServiceRecord {
 
         System.out.println("-----Enter Service Record Information-------");
         //System.out.println("ServiceRecord:" +  service_record_id++);
-        System.out.println("type:(gyms, phone, dry cleaning, room service)");
-        String type = sc.nextLine();
+        System.out.println("Service Name:(gyms, phone, dry cleaning, room service)");
+        String service_name = sc.nextLine();
         System.out.println("CheckinID:");
         int checkin_id = sc.nextInt();
-        System.out.println("HotelID:");
-        int hotel_id = sc.nextInt();
-        System.out.println("Room No.:");
-        int room_id = sc.nextInt();
-        System.out.println("CustomerID:");
-        int customer_id = sc.nextInt();
-        System.out.println("SubmitterID");
-        int submitter_id = sc.nextInt();
-        System.out.println("Date:");
-        sc = new Scanner(System.in);
-        String date = sc.nextLine();
-        System.out.println("Cost:");
-        float cost = sc.nextFloat();
-        boolean complete = false;
+        System.out.println("StaffID");
+        int staff_id = sc.nextInt();
+        System.out.println("Fee:");
+        float fee = sc.nextFloat();
+        //boolean complete = false;
 
-        String sql = "insert into Service_Record(type, checkin_id, hotel_id, room_id, customer_id, submitter_id, date, cost, complete) value(?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into Service_Record(service_name, checkin_id, staff_id, fee) value(?,?,?,?)";
 
         try{
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt =  conn.prepareStatement(sql);
             //ptmt.setInt(1,service_record_id);
-            ptmt.setString(1,type);
+            ptmt.setString(1, service_name);
             //to do
             ptmt.setInt(2,checkin_id);
-            ptmt.setInt(3,hotel_id);
-            ptmt.setInt(4,room_id);
-            ptmt.setInt(5,customer_id);
-            ptmt.setInt(6,submitter_id);
-            ptmt.setString(7,date);
-            ptmt.setFloat(8,cost);
-            ptmt.setBoolean(9, complete);
+            ptmt.setInt(3,staff_id);
+            ptmt.setFloat(4,fee);
             ptmt.execute();
             //System.out.println("ServiceRecord:"+service_record_id + "has been requested");
             System.out.println("ServiceRecord has been requested");
