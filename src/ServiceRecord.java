@@ -84,29 +84,49 @@ public class ServiceRecord {
         sc = new Scanner(System.in);
         String choice = sc.nextLine();
         System.out.println(choice);
-        System.out.print("Please input the new attribtue you want to give:");
         sc = new Scanner(System.in);
-        String attr = sc.nextLine();
+        String attr_s = null;
+        float attr_f = 0;
+        Boolean attr_b = false;
+        System.out.print("Please input the new attribtue you want to give:");
+        switch (choice) {
+            case "1":
+                sql += "set date";
+                attr_s = sc.nextLine();
+                break;
+            case "2":
+                sql += "set cost";
+                attr_f = sc.nextFloat();
+                break;
+            case "3":
+                sql += "set complete";
+                attr_b = sc.nextBoolean();
+                break;
+            default:
+                System.out.println("illegal input");
+                break;
+        }
+
         try {
             Connection conn = DBConnection.getConnection();
-            switch (choice) {
-                case "1":
-                    sql += "set date";
-                    break;
-                case "2":
-                    System.out.println("here\n\n\n");
-                    sql += "set cost";
-                    break;
-                case "3":
-                    sql += "set complete";
-                    break;
-                default:
-                    System.out.println("illegal input");
-                    break;
-            }
+
             sql += " = ? where customer_id = ? and room_id = ? ";
             PreparedStatement ptmt = conn.prepareStatement(sql);
-            ptmt.setString(1,attr);
+            switch (choice) {
+                case "1":
+                    ptmt.setString(1,attr_s);
+                    break;
+                case "2":
+                    ptmt.setFloat(1,attr_f);
+                    break;
+                case "3":
+                    ptmt.setBoolean(1,attr_b);
+                    break;
+                default:
+                    System.out.println("choice doestn't make sense");
+                    break;
+            }
+            //ptmt.setString(1,attr);
             ptmt.setInt(2,customer_id);
             ptmt.setInt(3,room_id);
             ptmt.execute();
