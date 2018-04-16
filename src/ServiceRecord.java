@@ -65,6 +65,54 @@ public class ServiceRecord {
             e.printStackTrace();
         }
     }
+    public static void updateServiceRec(){
+        System.out.println("Input CustomerID:");
+        Scanner sc = new Scanner(System.in);
+        int customer_id = sc.nextInt();
+        System.out.println("Input RoomID:");
+        int room_id = sc.nextInt();
+        String sql = "update Service_Record ";
+        //Again why we use loop to update?
+        //Because we don't know which several attr you want to update, for those you dont wanna change, you need give default value
+        //which is impossible when use sql string mechanism like (att1, attr2, att3) (?,?,?)
+        System.out.println("Please select the attribute you want to  update from 3 choice, below:");
+        System.out.println("1.Date");
+        System.out.println("2.Cost");
+        System.out.println("3.Complete");
+        sc = new Scanner(System.in);
+        String choice = sc.nextLine();
+        System.out.println(choice);
+        System.out.print("Please input the new attribtue you want to give:");
+        sc = new Scanner(System.in);
+        String attr = sc.nextLine();
+        try {
+            Connection conn = DBConnection.getConnection();
+            switch (choice) {
+                case "1":
+                    sql += "set date";
+                    break;
+                case "2":
+                    System.out.println("here\n\n\n");
+                    sql += "set cost";
+                    break;
+                case "3":
+                    sql += "set complete";
+                    break;
+                default:
+                    System.out.println("illegel input");
+                    break;
+            }
+            sql += " = ? where customer_id = ? and room_id = ? ";
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1,attr);
+            ptmt.setInt(2,customer_id);
+            ptmt.setInt(3,room_id);
+            ptmt.execute();
+        System.out.println("Service Record has been updated!");
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
     public static void retrieveServiceRec(){
         System.out.println("Input CustomerID:");
         Scanner sc = new Scanner(System.in);

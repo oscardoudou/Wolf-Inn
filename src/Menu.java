@@ -27,6 +27,8 @@ public class Menu {
                     HotelOperation.updateHotel();
                     break;
                 case "5":
+                    System.out.println("enter service record");
+                    ServiceRecord.updateServiceRec();
                     break;
                 case "6":
                     System.out.println("\n\nBye!");
@@ -61,6 +63,7 @@ public class Menu {
         System.out.println("2. Maintaining Service Records");
         System.out.println("3. This is for hotel test, would be merged into infomation processing later");
         System.out.println("4. Reports");
+        System.out.println("5. test for updateServiceRec");
         System.out.println("6. Exit");
         System.out.println("7. Staff Operations");
         System.out.println("8. Customer Operations");

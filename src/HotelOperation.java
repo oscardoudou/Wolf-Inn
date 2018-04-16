@@ -101,7 +101,7 @@ public class HotelOperation {
             }
             sql += " = ? where name = ? ";
             //attention: belew statement shouldn't put before switch,
-            // preparedstatement should create only after sql finished, or compile run ptmt have no index which lead to run time error
+            //preparedstatement should create only after sql finished, or compile run ptmt have no index which lead to run time error
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, attr);
             ptmt.setString(2, hotelname);
