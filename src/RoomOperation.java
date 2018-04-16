@@ -111,29 +111,28 @@ public class RoomOperation {
         int roomID = sc.nextInt();
         // TRANSACTION BEGINS
         try {
-            conn = DBConnection.getConnection();
-            try {
-                conn.setAutoCommit(false);
-                PreparedStatement ptmt = conn.prepareStatement(sql);
-                //use ?'s index to assign value
-                ptmt.setInt(1, hotelID);
-                ptmt.setInt(2, roomID);
-                ptmt.execute();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            conn.setAutoCommit(false);
+            ptmt.setInt(1, hotelID);
+            ptmt.setInt(2, roomID);
+            int success = ptmt.executeUpdate();
+            if (success == 1) {
+                conn.commit();
                 System.out.println("\n=== A room has been deleted! ===");
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-            conn.commit();
-        }catch (Exception e) {
-            try{
-                if(conn!=null)
-                    conn.rollback();
-                System.out.println("\nsuccessfully rollback!\n\n");
-            }catch(SQLException se2){
+            else {
+                try {
+                    if (conn != null) {
+                        System.out.println("\n!!!! Room Deletion Failed !!!!");
+                        conn.rollback();
+                    }
+                } catch (SQLException s) {
+                    s.printStackTrace();
+                }
+            }
+        }catch(SQLException se2){
                 se2.printStackTrace();
             }
-        }
-
         // TRANSACTION ENDS
     }
 
