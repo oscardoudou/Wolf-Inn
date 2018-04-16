@@ -2,11 +2,9 @@ import java.util.Scanner;
 
 public class Menu {
     public static void  main(String[] args){
-
         DBConnection.initialize();
         Seed.seed();
         Scanner sc = new Scanner(System.in);
-
 
         while(true) {
             printMenu();
@@ -15,7 +13,6 @@ public class Menu {
             switch(sc.nextLine()) {
                 case "1":
                     System.out.println("\nsuccess enter infoprocessing");
-                    HotelOperation.initialize();
                     HotelOperation.showHotels();
                     break;
                 case "2":

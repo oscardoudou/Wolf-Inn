@@ -141,6 +141,14 @@ public class Seed {
                 stmt.executeUpdate("INSERT INTO Services (serviceName, fee) VALUES ('special requests', 20)");
                 //------------------------------------------------------------------------------------------------------
 
+                stmt.executeUpdate("insert into Hotel(name, city, address, manager_id) " +
+                        "values('Hotel A', '21 ABC St', 'Raleigh NC 27', 919, 100)");
+                stmt.executeUpdate("insert into Hotel(name, city, address, manager_id) " +
+                        "values('Hotel B', '25 XYZ St', 'Rochester NY 54', 718, 101)");
+                stmt.executeUpdate("insert into Hotel(name, city, address, manager_id) " +
+                        "values('Hotel C', '29 PQR St', 'Greensboro NC 27', 984, 102)");
+                stmt.executeUpdate("insert into Hotel(name, city, address, manager_id) " +
+                        "values('Hotel D', '28 GHW St', 'Raleigh NC 32', 920, 105)");
 
                 stmt.executeUpdate("insert into Room (room_no, hotel_id, category, max_occu, rate, avai) " +
                         "values(1, 1, 'Economy', 1, 100, 1)");

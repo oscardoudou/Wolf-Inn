@@ -139,16 +139,4 @@ public class HotelOperation {
         }
     }
 
-    public static void initialize() {
-        try {
-            Statement stmt = null;
-            Connection conn = DBConnection.getConnection();
-            createHotel("hotel1", "1343 Huston Dr.", "Cary", 54556421, 1010);
-            createHotel("hotel2", "5678 Brigadon Dr.", "Raleigh", 7371320, 1007);
-
-         }
-        catch (Throwable oops) {
-            oops.printStackTrace();
-            }
-        }
-    }
+}
