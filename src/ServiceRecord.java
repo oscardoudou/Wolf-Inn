@@ -19,12 +19,12 @@ import java.util.Scanner;
  */
 
 public class ServiceRecord {
-    public static int service_record_id = 0;
+    //public static int service_record_id = 0;
     public static void enterServiceRec(){
         Scanner sc = new Scanner(System.in);
 
         System.out.println("-----Enter Service Record Information-------");
-        System.out.println("ServiceRecord:" +  service_record_id++);
+        //System.out.println("ServiceRecord:" +  service_record_id++);
         System.out.println("type:(gyms, phone, dry cleaning, room service)");
         String type = sc.nextLine();
         System.out.println("CheckinID:");
@@ -44,24 +44,25 @@ public class ServiceRecord {
         float cost = sc.nextFloat();
         boolean complete = false;
 
-        String sql = "insert into Service_Record(service_record_id, type, checkin_id, hotel_id, room_id, customer_id, submitter_id, date, cost, complete) value(?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into Service_Record(type, checkin_id, hotel_id, room_id, customer_id, submitter_id, date, cost, complete) value(?,?,?,?,?,?,?,?,?)";
 
         try{
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt =  conn.prepareStatement(sql);
-            ptmt.setInt(1,service_record_id);
-            ptmt.setString(2,type);
+            //ptmt.setInt(1,service_record_id);
+            ptmt.setString(1,type);
             //to do
-            ptmt.setInt(3,checkin_id);
-            ptmt.setInt(4,hotel_id);
-            ptmt.setInt(5,room_id);
-            ptmt.setInt(6,customer_id);
-            ptmt.setInt(7,submitter_id);
-            ptmt.setString(8,date);
-            ptmt.setFloat(9,cost);
-            ptmt.setBoolean(10, complete);
+            ptmt.setInt(2,checkin_id);
+            ptmt.setInt(3,hotel_id);
+            ptmt.setInt(4,room_id);
+            ptmt.setInt(5,customer_id);
+            ptmt.setInt(6,submitter_id);
+            ptmt.setString(7,date);
+            ptmt.setFloat(8,cost);
+            ptmt.setBoolean(9, complete);
             ptmt.execute();
-            System.out.println("ServiceRecord:"+service_record_id + "has been requested");
+            //System.out.println("ServiceRecord:"+service_record_id + "has been requested");
+            System.out.println("ServiceRecord has been requested");
         }catch(SQLException e){
             e.printStackTrace();
         }
