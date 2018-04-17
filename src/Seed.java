@@ -46,11 +46,11 @@ public class Seed {
                         "staff_id integer NOT NULL, " +
                         "service_name varchar(20) NOT NULL, " +
                         "fee integer NOT NULL)");
-                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(1,1,'phone',5)");
-                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(2,2,'gyms',20)");
-                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(3,3,'dry cleaning',25)");
-                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(4,4,'room service',30)");
-                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(5,5,'gyms',50)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(1,101,'phone',5)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(2,101,'gyms',20)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(3,102,'dry cleaning',25)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(4,103,'room service',30)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(5,104,'gyms',50)");
 
                 //------------------------------------------------------------------------------------------------------
                 // Create Staff Table @author Cosmo Pernie
