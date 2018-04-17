@@ -45,7 +45,7 @@ public class Seed {
                         "checkin_id integer NOT NULL, " +
                         "staff_id integer NOT NULL, " +
                         "service_name varchar(20) NOT NULL, " +
-                        "fee float NOT NULL)");
+                        "fee integer NOT NULL)");
                 stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(1,1,'phone',5)");
                 stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(2,2,'gyms',20)");
                 stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(3,3,'dry cleaning',25)");

@@ -9,9 +9,9 @@ import java.util.Scanner;
  * This class manages all Service Record information for the database
  * <p>
  * Operations:
- * (1) Create / Update Service Record Information
- * (2)
- * (3)
+ * (1) Create Service Record Information
+ * (2) Update Service Record Information
+ * (3) Retrieve Service Record Information
  *
  * Source https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html
  *
@@ -32,7 +32,7 @@ public class ServiceRecord {
         System.out.println("StaffID");
         int staff_id = sc.nextInt();
         System.out.println("Fee:");
-        float fee = sc.nextFloat();
+        int fee = sc.nextInt();
         //boolean complete = false;
 
         String sql = "insert into Service_Record(service_name, checkin_id, staff_id, fee) value(?,?,?,?)";
@@ -45,7 +45,7 @@ public class ServiceRecord {
             //to do
             ptmt.setInt(2,checkin_id);
             ptmt.setInt(3,staff_id);
-            ptmt.setFloat(4,fee);
+            ptmt.setInt(4,fee);
             ptmt.execute();
             //System.out.println("ServiceRecord:"+service_record_id + "has been requested");
             System.out.println("ServiceRecord has been requested");
@@ -69,20 +69,19 @@ public class ServiceRecord {
         //if last readin is sc.nextLine() as well, probably has no issue here, refer to hotel update operation
         sc = new Scanner(System.in);
         String choice = sc.nextLine();
-        System.out.println(choice);
         sc = new Scanner(System.in);
-        String attr_sid = null;
-        float attr_f = 0;
+        int attr_sid = 0;
+        int attr_f = 0;
         String attr_sn = null;
         System.out.print("Please input the new attribtue you want to give:");
         switch (choice) {
             case "1":
                 sql += "set staff_nid";
-                attr_sid = sc.nextLine();
+                attr_sid = sc.nextInt();
                 break;
             case "2":
                 sql += "set fee";
-                attr_f = sc.nextFloat();
+                attr_f = sc.nextInt();
                 break;
             case "3":
                 sql += "set service_name";
@@ -100,10 +99,10 @@ public class ServiceRecord {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             switch (choice) {
                 case "1":
-                    ptmt.setString(1,attr_sid);
+                    ptmt.setInt(1,attr_sid);
                     break;
                 case "2":
-                    ptmt.setFloat(1,attr_f);
+                    ptmt.setInt(1,attr_f);
                     break;
                 case "3":
                     ptmt.setString(1,attr_sn);
@@ -112,7 +111,6 @@ public class ServiceRecord {
                     System.out.println("choice doestn't make sense");
                     break;
             }
-            //ptmt.setString(1,attr);
             ptmt.setInt(2,checkin_id);
             ptmt.execute();
         System.out.println("Service Record has been updated!");
@@ -139,7 +137,7 @@ public class ServiceRecord {
                 int service_record_id = rs.getInt("service_record_id");
                 String service_name = rs.getString("service_name");
                 int staff_id = rs.getInt("staff_id");
-                float fee = rs.getFloat("fee");
+                int fee = rs.getInt("fee");
 
                 System.out.println("Retrieveing result from ServiceRecord for checkin_id:" + checkin_id );
                 System.out.println("service_name:" + service_name);

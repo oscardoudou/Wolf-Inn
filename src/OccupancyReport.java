@@ -1,5 +1,23 @@
-import java.util.Scanner;
 import java.sql.*;
+import java.util.Scanner;
+
+/**
+ * Acknowledgments: This example is a modification of code provided
+ * by Dimitri Rakitine. Further modified by Shrikanth N C for MySql(MariaDB) support
+ * Relpace all yzhan222 with your unity id and jlp^zcl* with your 9 \d or updated password (if changed)
+ * <p>
+ * This class manages all OccupancyReport information for the database
+ * <p>
+ * Operations:
+ * (1) Get Occupancy by Hotel
+ * (2) Get Occupancy by Room Category
+ * (3) Get Occupancy by City
+ * (4) Get Occupancy by DateRange
+ *
+ * Source https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html
+ *
+ * @author Yichi Zhang
+ */
 
 public class OccupancyReport {
     public static void getHotelOccupancy(){
@@ -54,6 +72,11 @@ public class OccupancyReport {
         }
     }
     public static void getDataRangeOccupancy(){
+        Scanner sc = new Scanner(System.in);
+        String choice = null;
+        while(true){
+            System.out.println("Please input start date(YYYY-MM-DD)");
+        }
 
     }
 }
