@@ -54,41 +54,39 @@ public class ServiceRecord {
         }
     }
     public static void updateServiceRec(){
-        System.out.println("Input CustomerID:");
+        System.out.println("Input CheckinID:");
         Scanner sc = new Scanner(System.in);
-        int customer_id = sc.nextInt();
-        System.out.println("Input RoomID:");
-        int room_id = sc.nextInt();
+        int checkin_id = sc.nextInt();
         String sql = "update Service_Record ";
         //Again why we use loop to update?
         //Because we don't know which several attr you want to update, for those you dont wanna change, you need give default value
         //which is impossible when use sql string mechanism like (att1, attr2, att3) (?,?,?)
         System.out.println("Please select the attribute you want to  update from 3 choice, below:(only input number)");
-        System.out.println("1.Date");
-        System.out.println("2.Cost");
-        System.out.println("3.Complete");
+        System.out.println("1.StaffID");
+        System.out.println("2.Fee");
+        System.out.println("3.ServiceName");
         //probably has unexpected scan here if last sc = sc.nextInt();
         //if last readin is sc.nextLine() as well, probably has no issue here, refer to hotel update operation
         sc = new Scanner(System.in);
         String choice = sc.nextLine();
         System.out.println(choice);
         sc = new Scanner(System.in);
-        String attr_s = null;
+        String attr_sid = null;
         float attr_f = 0;
-        Boolean attr_b = false;
-        System.out.print("Please input the new attribtue you want to give:(complete should be true or fasle)");
+        String attr_sn = null;
+        System.out.print("Please input the new attribtue you want to give:");
         switch (choice) {
             case "1":
-                sql += "set date";
-                attr_s = sc.nextLine();
+                sql += "set staff_nid";
+                attr_sid = sc.nextLine();
                 break;
             case "2":
-                sql += "set cost";
+                sql += "set fee";
                 attr_f = sc.nextFloat();
                 break;
             case "3":
-                sql += "set complete";
-                attr_b = sc.nextBoolean();
+                sql += "set service_name";
+                attr_sn = sc.nextLine();
                 break;
             default:
                 System.out.println("illegal input");
@@ -98,25 +96,24 @@ public class ServiceRecord {
         try {
             Connection conn = DBConnection.getConnection();
 
-            sql += " = ? where customer_id = ? and room_id = ? ";
+            sql += " = ? where checkin_id = ? ";
             PreparedStatement ptmt = conn.prepareStatement(sql);
             switch (choice) {
                 case "1":
-                    ptmt.setString(1,attr_s);
+                    ptmt.setString(1,attr_sid);
                     break;
                 case "2":
                     ptmt.setFloat(1,attr_f);
                     break;
                 case "3":
-                    ptmt.setBoolean(1,attr_b);
+                    ptmt.setString(1,attr_sn);
                     break;
                 default:
                     System.out.println("choice doestn't make sense");
                     break;
             }
             //ptmt.setString(1,attr);
-            ptmt.setInt(2,customer_id);
-            ptmt.setInt(3,room_id);
+            ptmt.setInt(2,checkin_id);
             ptmt.execute();
         System.out.println("Service Record has been updated!");
         } catch(SQLException e){
