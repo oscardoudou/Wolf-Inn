@@ -13,7 +13,7 @@ public class CheckInOut {
         
 try{
     Connection conn = DBConnection.getConnection();
-    String assgnroom="update Room set avai=false where hotel_id= ? and room_no= ?";
+    String assgnroom="update Room set avai=0 where hotel_id= ? and room_no= ?";
     PreparedStatement ptmt = conn.prepareStatement(assgnroom);
     System.out.println("Please enter hotel id and room number to assign room (eg: 001,203) ");
     Scanner sc = new Scanner(System.in);
@@ -619,7 +619,7 @@ try{
         
 try{
     Connection conn = DBConnection.getConnection();
-    String relroom="update Room set avai=true where hotel_id= ? and room_no= ?";
+    String relroom="update Room set avai=1 where hotel_id= ? and room_no= ?";
     PreparedStatement ptmt = conn.prepareStatement(relroom);
     System.out.println("Please enter hotel id and room number to assign room (eg: 001,203) ");
     Scanner sc = new Scanner(System.in);
