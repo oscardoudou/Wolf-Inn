@@ -504,7 +504,7 @@ try{
        Scanner sc = new Scanner(System.in);
           String hrnum = sc.nextLine();
           sc = new Scanner(hrnum).useDelimiter(", *");
-          hotelID=sc.nextInt();
+          hotelID = sc.nextInt();
           start=sc.next();
           end=sc.next();
            Connection conn = DBConnection.getConnection();
