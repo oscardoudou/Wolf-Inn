@@ -12,26 +12,18 @@ public class Menu {
             System.out.print("Choose an option: ");
             switch(sc.nextLine()) {
                 case "1":
-                    System.out.println("\nsuccess enter infoprocessing");
+                    System.out.println("\nEnter Info Processing");
                     HotelOperation.openMenu();
                     break;
                 case "2":
-                    System.out.println("\nenter infoprocessing but delete hotel");
-                    HotelOperation.deleteHotel();
+                    System.out.println("\nEntering Service Records Maintaining ");
+                    ServiceRecord.openMenu();
                     break;
                 case "3":
                     RoomOperation.openRoomMenu();
                     break;
                 case "4":
-                    System.out.println("\nenter occupancy update");
-                    OccupancyReport.getHotelOccupancy();
-                    OccupancyReport.getRoomTypeOccupancy();
-                    OccupancyReport.getCityOccupancy();
-                    //HotelOperation.updateHotel();
-                    break;
-                case "5":
-                    System.out.println("enter service record");
-                    ServiceRecord.updateServiceRec();
+                    System.out.println("\nEntering report");
                     break;
                 case "6":
                     System.out.println("\n\nBye!");
@@ -45,12 +37,6 @@ public class Menu {
                     break;
                 case "9":
                     BillingOperations.openBillingMenu();
-                    break;
-                case "10":
-                    ServiceRecord.enterServiceRec();
-                    break;
-                case "11":
-                    ServiceRecord.retrieveServiceRec();
                     break;
                 default:
                     System.out.println("\n!!! illegal input !!!");
@@ -66,13 +52,10 @@ public class Menu {
         System.out.println("2. Maintaining Service Records");
         System.out.println("3. This is for hotel test, would be merged into infomation processing later");
         System.out.println("4. Reports");
-        System.out.println("5. test for updateServiceRec");
         System.out.println("6. Exit");
         System.out.println("7. Staff Operations");
         System.out.println("8. Customer Operations");
         System.out.println("9. Billing Operations");
-        System.out.println("10.test for enterServiceRec");
-        System.out.println("11.test for retrieveServiceRec");
 
     }
 }
