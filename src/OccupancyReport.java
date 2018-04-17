@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Acknowledgments: This example is a modification of code provided
@@ -114,10 +115,37 @@ public class OccupancyReport {
     public static void getDataRangeOccupancy(){
         Scanner sc = new Scanner(System.in);
         String choice = null;
+        String datePattern = "\\d{4}-\\d{2}-\\d{2}";
         while(true){
             System.out.println("Please input start date(YYYY-MM-DD)");
+            choice = sc.nextLine();
+            if(Pattern.matches(datePattern,choice))
+                break;
         }
+        String startDate = choice;
 
+        while(true){
+            System.out.println("Please input end date(YYYY-MM-DD)");
+            choice = sc.nextLine();
+            if(Pattern.matches(datePattern,choice))
+                break;
+        }
+        String endDate = choice;
+
+        String sql = "select count(*) from Check_in where start_date >= ? and end_date <= ?";
+        Connection conn = DBConnection.getConnection();
+        try {
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, startDate);
+            ptmt.setString(2, endDate);
+            ResultSet rs = ptmt.executeQuery();
+            if(!rs.next())
+                System.out.println("No available record");
+            else
+                System.out.println("Occupied room # :" + rs.getInt(1) );
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 }
 
