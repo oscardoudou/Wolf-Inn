@@ -19,7 +19,42 @@ import java.util.Scanner;
  */
 
 public class ServiceRecord {
-    //public static int service_record_id = 0;
+
+    public static void printMenu(){
+        System.out.println("1.Create Service Record");
+        System.out.println("2.Delete Service Record");
+        System.out.println("3.Show Service Record");
+        System.out.println("4.Return to Main Menu");
+    }
+    public static void openMenu(){
+        Scanner sc = new Scanner(System.in);
+        while(true){
+            printMenu();
+            System.out.print("\nEnter Selection: ");
+            String choice = sc.nextLine();
+
+            switch (choice){
+                case "1":
+                    enterServiceRec();
+                    break;
+                case "2":
+                    updateServiceRec();
+                    break;
+                case "3":
+                    retrieveServiceRec();
+                    break;
+                case "4":
+                    System.out.println("Returning to Main Menu...");
+                    return;
+                default:
+                    System.out.println("Invalid Entry");
+                    break;
+
+            }
+        }
+
+    }
+
     public static void enterServiceRec(){
         Scanner sc = new Scanner(System.in);
 
