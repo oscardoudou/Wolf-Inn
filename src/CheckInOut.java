@@ -6,6 +6,73 @@ public class CheckInOut {
 
 
 
+public static void printMenu() {
+
+        System.out.println("\n====== CheckInOut Menu ======\n");
+        System.out.println("1. Enter CheckIn Information");
+        System.out.println("2. Update CheckIn Information");
+        System.out.println("3. process checkout(return total amount and receipt) ");
+        System.out.println("4. return hotel revenue");
+        System.out.println("5. Staff Serving list");
+        System.out.println("6. Show CheckIn list");
+        System.out.println("7. Assign Room");
+        System.out.println("8. Release Room");
+        System.out.println("9. Return to Main Menu");
+    }
+
+
+
+
+ 
+public static void OpenCheckInoutmenu()
+{
+
+
+  Scanner in = new Scanner(System.in);
+
+        while (true) {
+            printMenu();
+            System.out.print("\nEnter Selection: ");
+            String choice = in.nextLine();
+            System.out.println();
+
+            switch (choice) {
+                case "1":
+                    CheckIn();
+                    break;
+                case "2":
+                    updateCheckIn();
+                    break;
+                case "3":
+                    checkOut();
+                    break;
+                case "4":
+                   revenue();
+                    break;
+                case "5":
+                   staffservinglist();
+                    break;
+                case "6":
+                    showCheckIn();
+                    break;
+                case "7":
+                    AssignRoom();
+                    break;
+                case "8":
+                    ReleaseRoom();
+                    break;
+                case "9":
+                    System.out.println("Returning to Main Menu...");
+                    return;
+                default:
+                    System.out.println("Invalid Entry");
+                    break;
+            }
+        }
+        //in.close();
+    }
+
+
 
   public static void AssignRoom()
   {
