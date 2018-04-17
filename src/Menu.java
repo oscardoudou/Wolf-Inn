@@ -39,7 +39,12 @@ public class Menu {
                 case "9":
                     BillingOperations.openBillingMenu();
                     break;
-                default:
+                   
+                   case "10":
+                    CheckInOut.OpenCheckInoutmenu();
+                    break;
+                   
+                   default:
                     System.out.println("\n!!! illegal input !!!");
                     break;
             }
@@ -57,6 +62,7 @@ public class Menu {
         System.out.println("7. Staff Operations");
         System.out.println("8. Customer Operations");
         System.out.println("9. Billing Operations");
+        System.out.println("10. CheckInOut Operations");
 
     }
 }
