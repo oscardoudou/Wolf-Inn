@@ -27,25 +27,23 @@ public class Menu {
                     System.out.println("\nEntering report");
                     OccupancyReport.openMenu();
                     break;
+                case "5":
+                    StaffOperations.openStaffMenu();
+                    break;
                 case "6":
+                    CustomerOperations.openCustomerMenu();
+                    break;
+                case "7":
+                    BillingOperations.openBillingMenu();
+                    break;
+                case "8":
+                    CheckInOut.OpenCheckInoutmenu();
+                    break;
+                case "9":
                     System.out.println("\n\nBye!");
                     DBConnection.close();
                     return;
-                case "7":
-                    StaffOperations.openStaffMenu();
-                    break;
-                case "8":
-                    CustomerOperations.openCustomerMenu();
-                    break;
-                case "9":
-                    BillingOperations.openBillingMenu();
-                    break;
-                   
-                   case "10":
-                    CheckInOut.OpenCheckInoutmenu();
-                    break;
-                   
-                   default:
+                default:
                     System.out.println("\n!!! illegal input !!!");
                     break;
             }
@@ -59,11 +57,11 @@ public class Menu {
         System.out.println("2. Maintaining Service Records");
         System.out.println("3. Room Information processing");
         System.out.println("4. Reports");
-        System.out.println("6. Exit");
-        System.out.println("7. Staff Operations");
-        System.out.println("8. Customer Operations");
-        System.out.println("9. Billing Operations");
-        System.out.println("10. CheckInOut Operations");
+        System.out.println("5. Staff Operations");
+        System.out.println("6. Customer Operations");
+        System.out.println("7. Billing Operations");
+        System.out.println("8. CheckInOut Operations");
+        System.out.println("9. Exit");
 
     }
 }
