@@ -71,6 +71,7 @@ public class Seed {
                         "dob DATE NOT NULL, " +
                         "phone INTEGER NOT NULL, " +
                         "email VARCHAR(20) NOT NULL)");
+                        
 
                 // Create Billing Table @author Cosmo Pernie
                 // cardNumber can be NULL through cash option
@@ -84,6 +85,9 @@ public class Seed {
 //                stmt.executeUpdate("CREATE TABLE Services (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
 //                        "serviceName VARCHAR(20) NOT NULL, " +
 //                        "fee INTEGER NOT NULL)");
+
+
+stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL auto_increment,start_date DATE NOT NULL,end_date DATE NOT NULL,number_of_guests INTEGER NOT NULL,customer_id INTEGER NOT NULL,hotel_id INTEGER NOT NULL,room_number INTEGER NOT NULL,check_in_time TIME NOT NULL,check_out_time TIME NOT NULL,services_offered VARCHAR(40) NOT NULL)");
 
                 // Enter Staff Data from Demo Data @author Cosmo Pernie
                 stmt.executeUpdate("INSERT INTO Staff (id, name, age, title, hotelId, department, phone, " +
