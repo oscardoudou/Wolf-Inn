@@ -173,6 +173,21 @@ stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL auto_i
                         "values(1, 4, 'Presidential', 4, 5000, 1)");
                 stmt.executeUpdate("insert into Room(room_no, hotel_id, category, max_occu, rate, avai) " +
                         "values(5, 1, 'Deluxe', 2, 200, 1)");
+                        -----------------------------------------------
+                        stmt.executeUpdate("INSERT INTO Check_in (customer_id, hotel_id, room_number, hotelId, number_of_guests, start_date, " +
+                        "end_date,check_in_time,check_out_time,services_offered) VALUES (1001, 1, 1, 1, 2017-05-10, 2017-05-13, 3:17:00, " +
+                        " 10:22:23,'dry cleaning, gyms')");
+
+stmt.executeUpdate("INSERT INTO Check_in (customer_id, hotel_id, room_number, hotelId, number_of_guests, start_date, " +
+                        "end_date,check_in_time,check_out_time,services_offered) VALUES (1002, 1, 2, 2, 2017-05-10, 2017-05-13, 3:17:00, " +
+                        " 10:22:23,'gyms')");
+stmt.executeUpdate("INSERT INTO Check_in (customer_id, hotel_id, room_number, hotelId, number_of_guests, start_date, " +
+                        "end_date,check_in_time,check_out_time,services_offered) VALUES (1003, 2, 3, 1, 2016-05-10, 2016-05-14, 3:17:00, " +
+                        " 10:22:23,'room service')");
+
+stmt.executeUpdate("INSERT INTO Check_in (customer_id, hotel_id, room_number, hotelId, number_of_guests, start_date, " +
+                        "end_date,check_in_time,check_out_time,services_offered) VALUES (1004, 3, 3, 2, 2018-05-10, 2018-05-12, 3:17:00, " +
+                        " 10:22:23,'phone bills')");
 
             } finally {
                 close(rs);
