@@ -39,12 +39,18 @@ public class Seed {
 //                stmt.executeUpdate("CREATE TABLE Check_in(id INTEGER PRIMARY KEY NOT NULL auto_increment," +
 //                        "start_date DATE NOT NULL,end_date DATE NOT NULL,guestCnt INTEGER NOT NULL," +
 //                        "customer_id INTEGER NOT NULL,room_no INTEGER NOT NULL,foreign key(room_no) REFERENCES Room(room_no))");
+                //------------------------------------------------------------------------------------------------------
                 //Create Service_Record Table @author Yichi Zhang
                 stmt.executeUpdate("CREATE TABLE Service_Record (service_record_id integer NOT NULL PRIMARY KEY auto_increment, " +
                         "checkin_id integer NOT NULL, " +
                         "staff_id integer NOT NULL, " +
-                        "service_name varchar(10) NOT NULL, " +
+                        "service_name varchar(20) NOT NULL, " +
                         "fee float NOT NULL)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(1,1,'phone',5)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(2,2,'gyms',20)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(3,3,'dry cleaning',25)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(4,4,'room service',30)");
+                stmt.execute("insert into Service_Record(checkin_id, staff_id, service_name, fee)" + "values(5,5,'gyms',50)");
 
                 //------------------------------------------------------------------------------------------------------
                 // Create Staff Table @author Cosmo Pernie
@@ -74,7 +80,6 @@ public class Seed {
                         "billingAddress VARCHAR(50) NOT NULL, " +
                         "paymentMethod VARCHAR(20) NOT NULL, " +
                         "cardNumber INTEGER)");
-
                 // Create Services Table to hold Types of Services and associated Costs @author Cosmo Pernie
 //                stmt.executeUpdate("CREATE TABLE Services (id INTEGER NOT NULL PRIMARY KEY auto_increment, " +
 //                        "serviceName VARCHAR(20) NOT NULL, " +

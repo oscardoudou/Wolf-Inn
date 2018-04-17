@@ -124,43 +124,30 @@ public class ServiceRecord {
         }
     }
     public static void retrieveServiceRec(){
-        System.out.println("Input CustomerID:");
+        System.out.println("Input CheckinID:");
         Scanner sc = new Scanner(System.in);
-        int customer_id = sc.nextInt();
-        System.out.println("Input RoomID:");
-        int room_id = sc.nextInt();
+        int checkin_id = sc.nextInt();
         //"CREATE TABLE Service_Record (service_record_id integer NOT NULL PRIMARY KEY auto_increment, checkin_id integer NOT NULL, room_id integer NOT NULL, hotel_id integer NOT NULL, submitter_id integer NOT NULL, customer_id integer NOT NULL, type varchar(10) NOT NULL, complete boolean NOT NULL, date varchar(40) NOT NULL, cost float NOT NULL)");
 
         ResultSet rs = null;
-        String sql = "select * from Service_Record where customer_id = ? and room_id = ?";
+        String sql = "select * from Service_Record where checkin_id = ?";
 
         try{
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
-            ptmt.setInt(1,customer_id);
-            ptmt.setInt(2,room_id);
+            ptmt.setInt(1,checkin_id);
             rs = ptmt.executeQuery();
             //rs.next()是针对多行结果的判断
             while(rs.next()){
                 int service_record_id = rs.getInt("service_record_id");
-                int checkin_id = rs.getInt("checkin_id");
-                String type = rs.getString("type");
-                int hotel_id = rs.getInt("hotel_id");
-//                int room_id = rs.getInt("room_id");
-//                int customer_id = rs.getInt("customer_id");
-                int submitter_id = rs.getInt("submitter_id");
-                String date = rs.getString("date");
-                float cost = rs.getFloat("cost");
-                boolean complete = rs.getBoolean("complete");
+                String service_name = rs.getString("service_name");
+                int staff_id = rs.getInt("staff_id");
+                float fee = rs.getFloat("fee");
 
-                System.out.println("Retrieveing result from ServiceRecord for Room: "+room_id+" Customer: "+customer_id);
-                System.out.println("service_record_id:"+service_record_id);
-                System.out.println("checkin_id:"+ checkin_id);
-                System.out.println("hotel_id:"+hotel_id);
-                System.out.println("submitter_id:"+submitter_id);
-                System.out.println("date:"+date);
-                System.out.println("cost:"+cost);
-                System.out.println("complete:"+complete);
+                System.out.println("Retrieveing result from ServiceRecord for checkin_id:" + checkin_id );
+                System.out.println("service_name:" + service_name);
+                System.out.println("staff_id:" + staff_id);
+                System.out.println("fee:" + fee);
             }
 
         }catch(SQLException e){
