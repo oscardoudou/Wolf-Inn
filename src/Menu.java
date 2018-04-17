@@ -12,7 +12,7 @@ public class Menu {
             System.out.print("Choose an option: ");
             switch(sc.nextLine()) {
                 case "1":
-                    System.out.println("\nEnter Info Processing");
+                    System.out.println("\nEnter Hotel Info Processing");
                     HotelOperation.openMenu();
                     break;
                 case "2":
@@ -20,6 +20,7 @@ public class Menu {
                     ServiceRecord.openMenu();
                     break;
                 case "3":
+                    System.out.println("\nEnter Room Info Processing");
                     RoomOperation.openRoomMenu();
                     break;
                 case "4":
@@ -54,9 +55,9 @@ public class Menu {
     public static void printMenu(){
         System.out.println("----------------------------------");
         System.out.println("Select operation your want to execute: ");
-        System.out.println("1. Information Processing");
+        System.out.println("1. Hotel Information Processing");
         System.out.println("2. Maintaining Service Records");
-        System.out.println("3. This is for hotel test, would be merged into infomation processing later");
+        System.out.println("3. Room Information processing");
         System.out.println("4. Reports");
         System.out.println("6. Exit");
         System.out.println("7. Staff Operations");
