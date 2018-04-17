@@ -24,6 +24,7 @@ public class Menu {
                     break;
                 case "4":
                     System.out.println("\nEntering report");
+                    OccupancyReport.openMenu();
                     break;
                 case "6":
                     System.out.println("\n\nBye!");
