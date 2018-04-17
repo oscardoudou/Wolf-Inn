@@ -13,7 +13,7 @@ public class Menu {
             switch(sc.nextLine()) {
                 case "1":
                     System.out.println("\nsuccess enter infoprocessing");
-                    HotelOperation.showHotels();
+                    HotelOperation.openMenu();
                     break;
                 case "2":
                     System.out.println("\nenter infoprocessing but delete hotel");

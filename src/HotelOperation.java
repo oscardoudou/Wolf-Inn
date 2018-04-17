@@ -24,11 +24,64 @@ public class HotelOperation {
 //    static private final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/yzhan222";
 
 
-    public static void createHotel(String name, String address, String city, long phone, int manager_id) {
+    public static void printMenu(){
+        System.out.println("1.Create hotel");
+        System.out.println("2.Delete hotel");
+        System.out.println("3.Show hotel");
+        System.out.println("4.Update hotel");
+        System.out.println("5.Return to Main Menu");
+    }
+    public static void openMenu(){
+        Scanner sc = new Scanner(System.in);
+        while(true){
+            printMenu();
+            System.out.print("\nEnter Selection: ");
+            String choice = sc.nextLine();
+
+            switch (choice){
+                case "1":
+                    createHotel();
+                    break;
+                case "2":
+                    deleteHotel();
+                    break;
+                case "3":
+                    showHotels();
+                    break;
+                case "4":
+                    updateHotel();
+                    break;
+                case "5":
+                    System.out.println("Returning to Main Menu...");
+                    return;
+                default:
+                    System.out.println("Invalid Entry");
+                    break;
+
+            }
+        }
+
+    }
+
+
+    public static void createHotel() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("-----Enter Hotel Information-------");
+        System.out.println("name:");
+        String name = sc.nextLine();
+        System.out.println("address:");
+        String address = sc.nextLine();
+        System.out.println("city");
+        String city = sc.nextLine();
+        System.out.println("phone");
+        long phone = sc.nextLong();
+        System.out.println("manager_id");
+        int manager_id = sc.nextInt();
+
         String sql = "insert into Hotel(name, address, city, phone, manager_id) values(?,?,?,?,?)";
+
         try {
             Connection conn = DBConnection.getConnection();
-//            Connection conn = DriverManager.getConnection(jdbcURL, user, passwd);
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, name);
             ptmt.setString(2, address);
