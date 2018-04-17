@@ -403,7 +403,7 @@ try{
           String roomprice = "SELECT rate from Room where hotel_id= ? and room_no= ?  ";
           String services = "SELECT service_name, fee from Service_Record where checkin_id=?";
           String servicesfee = "SELECT SUM(fee) AS servicestotal from Service_Record where checkin_id=?";
-          String paymethod = "SELECT paymentMethod from Billing_info where customerId=? ";
+          String paymethod = "SELECT paymentMethod from Billing where customerId=? ";
           PreparedStatement ptmt = conn.prepareStatement(checkoutdata);
           System.out.println("Please enter hotel id and room number (eg: 001,203) ");
           Scanner sc = new Scanner(System.in);
