@@ -4,6 +4,50 @@ import java.util.Scanner;
 public class CheckInOut {
 
 
+
+
+
+  public static void AssignRoom()
+  {
+     
+        
+try{
+    Connection conn = DBConnection.getConnection();
+    String assgnroom="update Room set avai=false where hotel_id= ? and room_no= ?";
+    PreparedStatement ptmt = conn.prepareStatement(assgnroom);
+    System.out.println("Please enter hotel id and room number to assign room (eg: 001,203) ");
+    Scanner sc = new Scanner(System.in);
+    String hrnum = sc.nextLine();
+    sc=new Scanner(hrnum).useDelimiter("[^0-9]+");
+     ptmt.setInt(1, sc.nextInt());
+      ptmt.setInt(2, sc.nextInt());
+
+      if(ptmt.executeUpdate()>0)
+      {
+
+        System.out.println("room has been assigned");
+   
+      }
+
+
+
+
+
+ }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+       
+ 
+
+
+
+
+  }
+
+
     public static void CheckIn()
     {
 
@@ -11,7 +55,9 @@ public class CheckInOut {
 
         try{
  //Create check-in record
+            
             String sql = "insert into Check_in(customer_id, hotel_id, room_number, number_of_guests, start_date, end_date, check_in_time, check_out_time, services_offered) values(?,?,?,?,?,?,?,?,?)";
+            
             Connection conn = DBConnection.getConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             Scanner sc = new Scanner(System.in);
@@ -20,6 +66,7 @@ public class CheckInOut {
             System.out.println("Enter customer ID:");
             ptmt.setInt(1, sc.nextInt());
             System.out.println("Enter hotel ID:");
+            
             ptmt.setInt(2, sc.nextInt());
             System.out.println("Enter room number:");
             ptmt.setInt(3, sc.nextInt());
@@ -39,10 +86,13 @@ public class CheckInOut {
 
 // print out created check-in record
             if(ptmt.executeUpdate()>0) {
+
+                System.out.println("created check-in:");
+
                 Statement stmt = conn.createStatement();
-                ResultSet resultSet = stmt.executeQuery("SELECT * from Check_in");
+                ResultSet resultSet = stmt.executeQuery("SELECT * from Check_in ORDER BY ID DESC LIMIT 1");
                 ResultSetMetaData rsmd = resultSet.getMetaData();
-                resultSet.last();
+                resultSet.next();
                 int columnsNumber = rsmd.getColumnCount();
                 for (int i = 1; i <= columnsNumber; i++) {
                     if (i > 1) System.out.print(",  ");
@@ -53,6 +103,9 @@ public class CheckInOut {
 
             }
 
+
+      
+           
 
 
 
@@ -85,20 +138,20 @@ public class CheckInOut {
         Connection conn = DBConnection.getConnection();
         PreparedStatement ptmt;
         String updateCheckIn = "update Check_in set ";
-        String selectCheckIn="SELECT * from Check_in";
+        String selectCheckIn="SELECT * from Check_in ";
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter hotel id and room number to find CheckIn information (eg: 001,203) "); // select the check-in information we want to update
         String hrnum = sc.nextLine();
         sc=new Scanner(hrnum).useDelimiter("[^0-9]+");
         hotelID=sc.nextInt();
         roomNum=sc.nextInt();
-        selectCheckIn +=" where hotel_id= ? and room_number= ? ";
+        selectCheckIn +=" where hotel_id= ? and room_number= ? ORDER BY ID DESC LIMIT 1";
         ptmt=conn.prepareStatement(selectCheckIn);
         ptmt.setInt(1,hotelID);
         ptmt.setInt(2,roomNum);
         ResultSet resultSet =  ptmt.executeQuery();
         ResultSetMetaData rsmd = resultSet.getMetaData();
-        resultSet.last();
+        resultSet.next();
         checkInid=resultSet.getString(1);
         int columnsNumber = rsmd.getColumnCount();
         for (int i = 1; i <= columnsNumber; i++) {
@@ -233,7 +286,9 @@ public class CheckInOut {
   // print out updated check-in information
 
             if(ptmt.executeUpdate()>0) {
+
                 System.out.println("udate successfully");
+                 System.out.println("updated check-in:");
                 String updatedCheckIn="SELECT * from Check_in where id=?";
                 PreparedStatement pt=conn.prepareStatement(updatedCheckIn);
                 pt.setString(1,checkInid);
@@ -270,20 +325,333 @@ public class CheckInOut {
   
   {
 
+      try {
 
- 
+          int hotelID;
+          int roomNum;
 
-  
+          Connection conn = DBConnection.getConnection();
+          String checkoutdata = " SELECT id, customer_id, DATEDIFF(end_date,start_date) days from Check_in where hotel_id= ? and room_number= ? ORDER BY ID DESC LIMIT 1";
+
+          String roomprice = "SELECT rate from Room where hotel_id= ? and room_no= ?  ";
+          String services = "SELECT service_name, fee from Service_Record where checkin_id=?";
+          String servicesfee = "SELECT SUM(fee) AS servicestotal from Service_Record where checkin_id=?";
+          String paymethod = "SELECT paymentMethod from Billing_info where customerId=? ";
+          PreparedStatement ptmt = conn.prepareStatement(checkoutdata);
+          System.out.println("Please enter hotel id and room number (eg: 001,203) ");
+          Scanner sc = new Scanner(System.in);
+          String hrnum = sc.nextLine();
+          sc = new Scanner(hrnum).useDelimiter("[^0-9]+");
+          hotelID = sc.nextInt();
+          ptmt.setInt(1, hotelID);
+          roomNum = sc.nextInt();
+          ptmt.setInt(2, roomNum);
+          ResultSet rs = ptmt.executeQuery();
+          rs.next();
+          String checkInid = rs.getString(1);
+          String customID = rs.getString(2);
+          int days = rs.getInt(3);
+          //get nightly rate
+          ptmt = conn.prepareStatement(roomprice);
+          ptmt.setInt(1, hotelID);
+          ptmt.setInt(2, roomNum);
+          rs = ptmt.executeQuery();
+          rs.next();
+          int nightlyrate = rs.getInt(1);
+          int roomfees = nightlyrate * days;
+          //get total service fees
+          ptmt = conn.prepareStatement(servicesfee);
+          ptmt.setString(1, checkInid);
+          rs = ptmt.executeQuery();
+          rs.next();
+          int servicetotalfees = rs.getInt(1);
+          int totalfee = roomfees + servicetotalfees;
+          //see whether hotel card
+          ptmt = conn.prepareStatement(paymethod);
+          ptmt.setString(1, customID);
+          rs = ptmt.executeQuery();
+          rs.next();
+          String payway = rs.getString(1);
+          if (new String(payway).equals("hotel credit")) {
+
+              totalfee = (int)(0.95 * totalfee);
 
 
+          }
+          // get all service records
+          ptmt = conn.prepareStatement(services);
+          ptmt.setString(1, checkInid);
+          rs = ptmt.executeQuery();
+
+          
+
+          
+          System.out.println("receipt");
+          System.out.println("-------------------------");
+           System.out.println("items"+"    "+"price");
+          System.out.println("room" + " "  + roomfees);
+
+
+          
+          ResultSetMetaData rsmd = rs.getMetaData();
+          int columnsNumber = rsmd.getColumnCount();
+          while(rs.next())
+          {
+          for (int i = 1; i <= columnsNumber; i++) {
+              
+              String columnValue = rs.getString(i);
+              System.out.print(columnValue+" ");
+          }
+          System.out.println("");
+         }
+           System.out.println("-------------------------");
+          System.out.println("Total Fees   " + totalfee);
+
+      }catch (SQLException e) {
+          e.printStackTrace();
+      }
 
 
 
   }
 
+   
+   
+
+ public static void revenue()
+ {
+
+   try
+   {
+         int rev=0;
+        
+        String roomprice = "SELECT rate from Room where hotel_id= ? and room_no= ?  ";
+         String checkin= " SELECT id, customer_id, room_number, DATEDIFF(end_date,start_date) days from Check_in where hotel_id= ? and end_date between ? and ?  ";
+         String servicesfee = "SELECT SUM(fee) AS servicestotal from Service_Record where checkin_id=?";
+          String paymethod = "SELECT paymentMethod from Billing where customerId=? ";
+         int hotelID;
+         String start;
+         String end;
+        System.out.println("Please enter hotel id and date range(eg: 001,2018-03-21,2018-03-23) ");
+        
+       Scanner sc = new Scanner(System.in);
+          String hrnum = sc.nextLine();
+          sc = new Scanner(hrnum).useDelimiter(", *");
+          hotelID=hotelID = sc.nextInt();
+          start=sc.next();
+          end=sc.next();
+           Connection conn = DBConnection.getConnection();
+      PreparedStatement ptmt = conn.prepareStatement(checkin);
+       ptmt.setInt(1, hotelID);
+       ptmt.setString(2,start);
+       ptmt.setString(3,end);
+       ResultSet resultset=ptmt.executeQuery();
+
+
+
+
+
+           while(resultset.next())
+           {
+          
+              
+           
+               String checkInid=resultset.getString(1);
+              int days=resultset.getInt(4);
+              int roomNum=resultset.getInt(3);
+              String customID=resultset.getString(2);
+
+             ptmt = conn.prepareStatement(roomprice);
+           ptmt.setInt(1, hotelID);
+           ptmt.setInt(2, roomNum);
+            ResultSet rs = ptmt.executeQuery();
+           rs.next();
+           int nightlyrate = rs.getInt(1);
+           int roomfees = nightlyrate * days;
+
+
+           ptmt = conn.prepareStatement(servicesfee);
+           ptmt.setString(1, checkInid);
+           rs = ptmt.executeQuery();
+           rs.next();
+           int servicetotalfees = rs.getInt(1);
+           int totalfee = roomfees + servicetotalfees;
+           
+
+
+     ptmt = conn.prepareStatement(paymethod);
+           ptmt.setString(1, customID);
+           rs = ptmt.executeQuery();
+           rs.next();
+           String payway = rs.getString(1);
+           if (new String(payway).equals("hotel credit")) {
+
+               totalfee = (int)(0.95 * totalfee);
+
+
+           }
+
+
+        rev+=totalfee;
+
+
+          
+          
+         }
+
+         System.out.println("revenue: "+rev);
+       
+
+
+
+
+
+
+   }
+   catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+
+ }
+
+
+
+
+    public static void staffservinglist()
+    {
+
+
+
+     try
+     {
+        String sql="SELECT id from Check_in where hotel_id= ? and room_number= ? ORDER BY ID DESC LIMIT 1";
+        String stafflist = " SELECT * from Staff where id IN(SELECT DISTINCT staff_id from Service_Record where checkin_id=?)";
+       int hotelID;
+       int roomNum;
+        
+      Connection conn = DBConnection.getConnection();
+      PreparedStatement ptmt = conn.prepareStatement(sql);
+      System.out.println("Please enter hotel id and room number (eg: 001,203) ");
+      Scanner sc = new Scanner(System.in);
+          String hrnum = sc.nextLine();
+          sc = new Scanner(hrnum).useDelimiter("[^0-9]+");
+          hotelID = sc.nextInt();
+          ptmt.setInt(1, hotelID);
+          roomNum = sc.nextInt();
+          ptmt.setInt(2, roomNum);
+          ResultSet rs = ptmt.executeQuery();
+          rs.next();
+          String checkInid = rs.getString(1);
+         ptmt=conn.prepareStatement(stafflist);
+          ptmt.setString(1, checkInid);
+          rs = ptmt.executeQuery();
+          System.out.println("staff memebers who serve this customer" );
+          System.out.println("---------------------" );
+         ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            while (rs.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print(",  ");
+                    String columnValue = rs.getString(i);
+                    System.out.print(rsmd.getColumnName(i) + " " +columnValue  );
+                }
+                System.out.println("");
+            }
+
+
+
+
+
+     }
+     catch (SQLException e) {
+          e.printStackTrace();
+      }
+
+     
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
-    
+    public static void ReleaseRoom()
+  {
+     
+        
+try{
+    Connection conn = DBConnection.getConnection();
+    String relroom="update Room set avai=true where hotel_id= ? and room_no= ?";
+    PreparedStatement ptmt = conn.prepareStatement(relroom);
+    System.out.println("Please enter hotel id and room number to assign room (eg: 001,203) ");
+    Scanner sc = new Scanner(System.in);
+    String hrnum = sc.nextLine();
+    sc=new Scanner(hrnum).useDelimiter("[^0-9]+");
+     ptmt.setInt(1, sc.nextInt());
+      ptmt.setInt(2, sc.nextInt());
+
+      if(ptmt.executeUpdate()>0)
+      {
+
+        System.out.println("room has been released");
+   
+      }
+
+
+
+
+
+ }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+       
+ 
+
+
+
+
+  }
   
 
 
@@ -335,32 +703,6 @@ public class CheckInOut {
     }
 
 
-    public static void selfcreatecheckin()
-    {
-
-        try {
-            String sql = "insert into Check_in(customer_id, hotel_id, room_number, number_of_guests, start_date, end_date, check_in_time, check_out_time, services_offered) values(?,?,?,?,?,?,?,?,?)";
-            Connection conn = DBConnection.getConnection();
-            PreparedStatement ptmt = conn.prepareStatement(sql);
-            ptmt.setString(1,"23");
-            ptmt.setString(2,"21");
-            ptmt.setString(3,"203");
-            ptmt.setString(4,"2");
-            ptmt.setString(5,"2018-03-21");
-            ptmt.setString(6,"2018-03-21");
-            ptmt.setString(7,"21:21:21");
-            ptmt.setString(8,"21:21:21");
-            ptmt.setString(9,"gym");
-            ptmt.executeUpdate();
-
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
 
 
