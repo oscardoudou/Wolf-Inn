@@ -62,6 +62,5 @@ public class Menu {
         System.out.println("7. Billing Operations");
         System.out.println("8. CheckInOut Operations");
         System.out.println("9. Exit");
-
     }
 }
